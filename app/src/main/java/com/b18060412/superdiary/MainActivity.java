@@ -146,6 +146,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    /**
+     * 该方法遍历 diaryList 中的每个 DiaryItem，并调用 getSchemeCalendar() 创建对应的 SchemeCalendar 对象。
+     * SchemeCalendar 对象用于在日历视图中标记特定日期，并包含了日期和心情（如表情符号）等信息。
+     * 将所有 SchemeCalendar 对象放入 map 中，然后调用 CV_calendar.setSchemeDate(map); 将这些标记传递给日历控件进行显示。
+     */
     private void initCalendar() {
         for(DiaryItem item:diaryList){
             map.put(getSchemeCalendar(item.getDate(),item.getMood()).toString(),getSchemeCalendar(item.getDate(),item.getMood()));
@@ -163,6 +168,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return sum;
     }
 
+    /**
+     * 这个方法接收日记的日期 (date) 和心情 (mood) 作为参数，并返回一个 SchemeCalendar 对象。
+     * @param date
+     * @param mood
+     * @return
+     */
     private com.haibin.calendarview.Calendar getSchemeCalendar(long date, String mood){
         com.haibin.calendarview.Calendar calendar = new com.haibin.calendarview.Calendar();
         String year = new SimpleDateFormat("yyyy", Locale.CHINA).format(date);
@@ -171,10 +182,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         calendar.setYear(Integer.parseInt(year));
         calendar.setMonth(Integer.parseInt(month));
         calendar.setDay(Integer.parseInt(day));
-        calendar.setScheme(mood);
+        calendar.setScheme(mood);// 设置心情（或者标识）
         calendar.addScheme(new com.haibin.calendarview.Calendar.Scheme());
         return calendar;
     }
+
+    /**
+     * 该方法从数据库中加载所有日记记录，并将其存储在 diaryList 列表中。
+     * 每个 DiaryItem 包含了日记的内容、日期、心情（标识符）等信息。
+     */
     private void loadDiary() {
         diaryList.clear();
         Cursor cursor = DBManager.getInstance().selectAllDiary();
