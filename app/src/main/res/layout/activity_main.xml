@@ -93,10 +93,11 @@
             app:week_start_with="mon"
             android:id="@+id/CV_calendar"
             android:visibility="visible"
-            app:scheme_text_color="@color/white"
+            app:scheme_text_color="@color/black"
             app:current_day_text_color="@color/color_today_text"
             app:current_day_lunar_text_color="@color/color_today_text"
             app:month_view_show_mode="mode_fix"
+            app:lunar_text_size="0dp"
             app:month_view="com.b18060412.superdiary.calendar.MyMonthView"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

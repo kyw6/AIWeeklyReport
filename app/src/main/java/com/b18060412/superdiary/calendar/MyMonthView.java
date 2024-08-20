@@ -57,7 +57,7 @@ public class MyMonthView extends MonthView {
 
         // 计算圆心的坐标
         float cx = x + mItemWidth / 2f; // 使用 float 确保计算准确
-        float cy = y + mItemHeight / 2f + dipToPx(getContext(), OFFSET); // 使用 float 确保计算准确
+        float cy = y + mItemHeight / 2f + dipToPx(getContext(), OFFSET) -10; // 使用 float 确保计算准确
 
         // 计算半径，取宽和高中的最小值除以2，再减去padding
         float radius = Math.min(mItemWidth, mItemHeight) / 2f - mPadding;
@@ -73,23 +73,22 @@ public class MyMonthView extends MonthView {
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x, int y) {
         // 设置标记的小圆点颜色为金黄色
-        mSchemeBasicPaint.setColor(Color.parseColor("#FFB21D")); // 金黄色
+        mSchemeBasicPaint.setColor(Color.parseColor("#FFB21D"));
 
         // 设置为填充样式，去除边框
         mSchemeBasicPaint.setStyle(Paint.Style.FILL);
 
         // 计算日期单元格的中心坐标
-        float centerX = x + mItemWidth / 2f; // 使用 float 确保计算准确
-        float centerY = y + mItemHeight / 2f + dipToPx(getContext(), OFFSET); // 使用 float 确保计算准确
+        float centerX = x + mItemWidth / 2f; // 日期单元格的水平中心
+        float centerY = y + mItemHeight - mPadding - mRadio -30; // 日期单元格的底部，向上偏移半径和padding
 
-        // 计算半径，取宽和高中的最小值除以2，再减去padding
-        float radius = Math.min(mItemWidth, mItemHeight) / 2f - mPadding;
+        // 设置半径大小
+        float radius = dipToPx(getContext(), 3); // 半径由初始化时定义的mRadio决定
 
-        // 绘制标记的小圆点
+        // 在日期单元格的底部绘制标记的小圆点
         canvas.drawCircle(centerX, centerY, radius, mSchemeBasicPaint);
-
-
     }
+
 
 
 
