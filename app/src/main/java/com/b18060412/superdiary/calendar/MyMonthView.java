@@ -11,7 +11,7 @@ import com.haibin.calendarview.MonthView;
 // 自定义的月份视图类，继承自 MonthView，
 // 用于自定义每一天的绘制效果。
 public class MyMonthView extends MonthView {
-
+    private static final float OFFSET = -1.5f; // 你可以根据需要调整这个值
     // 文本画笔，用于绘制日期文字
     private Paint mTextPaint = new Paint();
 
@@ -54,12 +54,14 @@ public class MyMonthView extends MonthView {
         mSelectedPaint.setStrokeWidth(dipToPx(getContext(), 2)); // 设置边框宽度
         // 设置边框颜色
         mSelectedPaint.setColor(Color.parseColor("#FFB21D"));
+
         // 计算圆心的坐标
-        int cx = x + mItemWidth / 2;
-        int cy = y + mItemHeight / 2;
+        float cx = x + mItemWidth / 2f; // 使用 float 确保计算准确
+        float cy = y + mItemHeight / 2f + dipToPx(getContext(), OFFSET); // 使用 float 确保计算准确
 
         // 计算半径，取宽和高中的最小值除以2，再减去padding
-        int radius = Math.min(mItemWidth, mItemHeight) / 2 - mPadding;
+        float radius = Math.min(mItemWidth, mItemHeight) / 2f - mPadding;
+
         // 绘制圆形边框
         canvas.drawCircle(cx, cy, radius, mSelectedPaint);
 
@@ -67,32 +69,25 @@ public class MyMonthView extends MonthView {
     }
 
 
-
     // 绘制带有 Scheme (标记) 的日期
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x, int y) {
-        // 设置标记的小圆点颜色为黄色
+        // 设置标记的小圆点颜色为金黄色
         mSchemeBasicPaint.setColor(Color.parseColor("#FFB21D")); // 金黄色
 
         // 设置为填充样式，去除边框
         mSchemeBasicPaint.setStyle(Paint.Style.FILL);
 
         // 计算日期单元格的中心坐标
-        int centerX = x + mItemWidth / 2;
-        int centerY = y + mItemHeight / 2;
+        float centerX = x + mItemWidth / 2f; // 使用 float 确保计算准确
+        float centerY = y + mItemHeight / 2f + dipToPx(getContext(), OFFSET); // 使用 float 确保计算准确
 
         // 计算半径，取宽和高中的最小值除以2，再减去padding
-        int radius = Math.min(mItemWidth, mItemHeight) / 2 - mPadding;
+        float radius = Math.min(mItemWidth, mItemHeight) / 2f - mPadding;
 
         // 绘制标记的小圆点
-        canvas.drawCircle(
-                centerX, // 圆心 x 坐标
-                centerY, // 圆心 y 坐标
-                radius,  // 圆的半径
-                mSchemeBasicPaint
-        );
-        // 设置标记文字颜色为白色
-        mTextPaint.setColor(Color.WHITE);
+        canvas.drawCircle(centerX, centerY, radius, mSchemeBasicPaint);
+
 
     }
 
