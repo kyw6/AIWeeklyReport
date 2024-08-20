@@ -98,7 +98,7 @@
             app:current_day_lunar_text_color="@color/color_today_text"
             app:month_view_show_mode="mode_fix"
             app:lunar_text_size="0dp"
-
+            app:calendar_height="47dp"
             app:week_text_size="20sp"
             app:day_text_size="14sp"
             app:month_view="com.b18060412.superdiary.calendar.MyMonthView"/>

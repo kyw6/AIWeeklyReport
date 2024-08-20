@@ -12,7 +12,7 @@ import com.haibin.calendarview.MonthView;
 // 自定义的月份视图类，继承自 MonthView，
 // 用于自定义每一天的绘制效果。
 public class MyMonthView extends MonthView {
-    private static final float OFFSET = -19f; // 你可以根据需要调整这个值
+    private static final float OFFSET = -17f; // 你可以根据需要调整这个值
     // 文本画笔，用于绘制日期文字
     private Paint mTextPaint = new Paint();
 
