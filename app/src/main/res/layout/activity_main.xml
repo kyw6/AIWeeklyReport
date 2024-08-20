@@ -71,12 +71,12 @@
 
                 />
         </LinearLayout>
-        <View
-            android:id="@+id/date_shadow"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:layout_below="@id/CV_calendar"
-            android:background="@drawable/view_bottom_shadow" />
+<!--        <View-->
+<!--            android:id="@+id/date_shadow"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="5dp"-->
+<!--            android:layout_below="@id/CV_calendar"-->
+<!--            android:background="@drawable/view_bottom_shadow" />-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/RV_diary"
@@ -98,6 +98,9 @@
             app:current_day_lunar_text_color="@color/color_today_text"
             app:month_view_show_mode="mode_fix"
             app:lunar_text_size="0dp"
+
+            app:week_text_size="20sp"
+            app:day_text_size="14sp"
             app:month_view="com.b18060412.superdiary.calendar.MyMonthView"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

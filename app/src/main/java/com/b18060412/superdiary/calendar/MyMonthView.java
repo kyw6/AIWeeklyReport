@@ -5,13 +5,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.b18060412.superdiary.util.DisplayUtils;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.MonthView;
 
 // 自定义的月份视图类，继承自 MonthView，
 // 用于自定义每一天的绘制效果。
 public class MyMonthView extends MonthView {
-    private static final float OFFSET = -1.5f; // 你可以根据需要调整这个值
+    private static final float OFFSET = -19f; // 你可以根据需要调整这个值
     // 文本画笔，用于绘制日期文字
     private Paint mTextPaint = new Paint();
 
@@ -53,49 +54,51 @@ public class MyMonthView extends MonthView {
         mSelectedPaint.setStyle(Paint.Style.STROKE);
         mSelectedPaint.setStrokeWidth(dipToPx(getContext(), 2)); // 设置边框宽度
         // 设置边框颜色
-        mSelectedPaint.setColor(Color.parseColor("#FFB21D"));
+        mSelectedPaint.setColor(Color.parseColor("#FFFF8514"));
 
-        // 计算圆心的坐标
-        float cx = x + mItemWidth / 2f; // 使用 float 确保计算准确
-        float cy = y + mItemHeight / 2f + dipToPx(getContext(), OFFSET) -10; // 使用 float 确保计算准确
+        // 获取日历文字宽度和高度
+        String dayText = String.valueOf(calendar.getDay());
+        float textWidth = mTextPaint.measureText(dayText);
+        Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
+        float textHeight = fontMetrics.descent - fontMetrics.ascent;
 
-        // 计算半径，取宽和高中的最小值除以2，再减去padding
-        float radius = Math.min(mItemWidth, mItemHeight) / 2f - mPadding;
+        // 计算文字的中心位置
+        float centerX = x + (mItemWidth - textWidth) / 2f + textWidth / 2f;
+        float centerY = y + (mItemHeight - textHeight) / 2f + (textHeight - fontMetrics.bottom) / 2f + OFFSET;
 
+        // 半径15
+        float radius = DisplayUtils.dpToPx(getContext(), 15);
         // 绘制圆形边框
-        canvas.drawCircle(cx, cy, radius, mSelectedPaint);
+        canvas.drawCircle(centerX, centerY, radius, mSelectedPaint);
 
         return true; // 返回 true 表示自定义选中效果
     }
 
-
     // 绘制带有 Scheme (标记) 的日期
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x, int y) {
-        // 设置标记的小圆点颜色为金黄色
         mSchemeBasicPaint.setColor(Color.parseColor("#FFB21D"));
 
         // 设置为填充样式，去除边框
         mSchemeBasicPaint.setStyle(Paint.Style.FILL);
+        //设置日历文字的颜色:白色
+        mSchemeTextPaint.setColor(Color.WHITE);
 
-        // 计算日期单元格的中心坐标
-        float centerX = x + mItemWidth / 2f; // 日期单元格的水平中心
-        float centerY = y + mItemHeight - mPadding - mRadio -30; // 日期单元格的底部，向上偏移半径和padding
+        // 获取日历文字宽度和高度
+        String dayText = String.valueOf(calendar.getDay());
+        float textWidth = mTextPaint.measureText(dayText);
+        Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
+        float textHeight = fontMetrics.descent - fontMetrics.ascent;
 
-        // 设置半径大小
-        float radius = dipToPx(getContext(), 3); // 半径由初始化时定义的mRadio决定
+        // 计算文字的中心位置
+        float centerX = x + (mItemWidth - textWidth) / 2f + textWidth / 2f;
+        float centerY = y + (mItemHeight - textHeight) / 2f + (textHeight - fontMetrics.bottom) / 2f + OFFSET;
 
-        // 在日期单元格的底部绘制标记的小圆点
+        // 半径15dp
+        float radius = DisplayUtils.dpToPx(getContext(), 15);
+
+        // 绘制
         canvas.drawCircle(centerX, centerY, radius, mSchemeBasicPaint);
-    }
-
-
-
-
-
-    // 获取文本的宽度，用于居中对齐
-    private float getTextWidth(String text) {
-        return mTextPaint.measureText(text);
     }
 
     // 绘制日期文字
@@ -109,22 +112,28 @@ public class MyMonthView extends MonthView {
         boolean isInRange = isInRange(calendar);
 
         if (isSelected) {
-            // 绘制选中日期的文字
-            canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top, mSelectTextPaint);
-            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10, mSelectedLunarTextPaint);
+            // 在绘制文本之前先绘制选中的边框
+            onDrawSelected(canvas, calendar, x, y, hasScheme);
+        }
+
+        if (calendar.isCurrentDay()) {
+            // 设置今天的日期文字为黄色
+            mCurDayTextPaint.setColor(Color.parseColor("#FFB21D"));
+            canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top, mCurDayTextPaint);
+            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10, mCurDayLunarTextPaint);
         } else if (hasScheme) {
-            // 绘制带有 Scheme 的日期文字
+            // 设置带有 Scheme 的日期文字为白色
+            mSchemeTextPaint.setColor(Color.WHITE);
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentMonth() && isInRange ? mSchemeTextPaint : mOtherMonthTextPaint);
             canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10, mCurMonthLunarTextPaint);
         } else {
-            // 绘制普通日期文字
+            // 设置普通日期的文字颜色为黑色
+            mCurMonthTextPaint.setColor(Color.BLACK);
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
-                    calendar.isCurrentDay() ? mCurDayTextPaint :
-                            calendar.isCurrentMonth() && isInRange ? mCurMonthTextPaint : mOtherMonthTextPaint);
+                    calendar.isCurrentMonth() && isInRange ? mCurMonthTextPaint : mOtherMonthTextPaint);
             canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10,
-                    calendar.isCurrentDay() && isInRange ? mCurDayLunarTextPaint :
-                            calendar.isCurrentMonth() ? mCurMonthLunarTextPaint : mOtherMonthLunarTextPaint);
+                    calendar.isCurrentMonth() ? mCurMonthLunarTextPaint : mOtherMonthLunarTextPaint);
         }
     }
 
