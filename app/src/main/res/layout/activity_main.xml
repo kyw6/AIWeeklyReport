@@ -90,10 +90,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/LL_profile"
             app:calendar_padding="5dp"
+            app:week_start_with="mon"
             android:id="@+id/CV_calendar"
             android:visibility="visible"
-            app:scheme_text_color="#333"
-            app:month_view_show_mode="mode_only_current"
+            app:scheme_text_color="@color/white"
+            app:current_day_text_color="@color/color_today_text"
+            app:current_day_lunar_text_color="@color/color_today_text"
+            app:month_view_show_mode="mode_fix"
             app:month_view="com.b18060412.superdiary.calendar.MyMonthView"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

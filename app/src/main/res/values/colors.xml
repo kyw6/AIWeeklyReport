@@ -11,4 +11,6 @@
     <color name="edittext_hint">#d4d2d4</color>
     <color name="toolbar">#989798</color>
     <color name="date_divider">#9F9D9F</color>
+
+    <color name="color_today_text">#FFB21D</color>
 </resources>
