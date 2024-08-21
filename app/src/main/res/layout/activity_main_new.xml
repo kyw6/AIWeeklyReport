@@ -32,28 +32,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="20dp"
         />
-    <ImageButton
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="25dp"
-        android:id="@+id/BTN_add"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="@drawable/button_add"/>
 
-    <ImageButton
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="50dp"
-        android:layout_margin="25dp"
-        android:id="@+id/BTN_gene"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="@drawable/button_gene"/>
     <com.haibin.calendarview.CalendarView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -72,5 +51,40 @@
         app:week_text_size="20sp"
         app:day_text_size="14sp"
         app:month_view="com.b18060412.superdiary.calendar.MyMonthView"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/FL_diary_list"
+        app:layout_constraintTop_toBottomOf="@+id/CV_calendar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/color_bg_home"
+        android:visibility="visible"
+        />
+
+
+    <ImageView
+        android:id="@+id/BTN_gene"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/BTN_add"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/button_gene"/>
+
+    <ImageButton
+        android:id="@+id/BTN_add"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/button_add"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

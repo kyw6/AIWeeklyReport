@@ -13,4 +13,6 @@
     <color name="date_divider">#9F9D9F</color>
 
     <color name="color_today_text">#FFB21D</color>
+<!--    首页背景灰色-->
+    <color name="color_bg_home">#F7F7F7</color>"
 </resources>

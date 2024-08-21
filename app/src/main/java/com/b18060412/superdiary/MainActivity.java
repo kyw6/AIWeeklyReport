@@ -289,20 +289,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 drawerLayout.openDrawer(GravityCompat.START);
                 break;
             case R.id.FAB_edit://进入日历选中日记
-                Intent intent= new Intent(MainActivity.this,DiaryActivity.class);
-                if (!isSelectedDateNull){
-                    intent.putExtra("DiaryId",selectedDiaryId);
-                    intent.putExtra("SelectedPosition",selectedItemPosition);
-                    intent.putExtra("EditMode",true);
-                    startActivityForResult(intent,REQUEST_CODE_EDIT);
-                    Log.e(TAG, "onClick: EDIT" );
-                }else{
-                    long date = CV_calendar.getSelectedCalendar().getTimeInMillis();
-                    intent.putExtra("DiaryId","-1");
-                    intent.putExtra("DiaryDate",date);
-                    startActivityForResult(intent,REQUEST_CODE_ADD);
-                    Log.e(TAG, "onClick: ADD");
-                }
+                Intent intent= new Intent(MainActivity.this,MainActivityNew.class);
+                startActivityForResult(intent,REQUEST_CODE_ADD);
+//                Intent intent= new Intent(MainActivity.this,DiaryActivity.class);
+//                if (!isSelectedDateNull){
+//                    intent.putExtra("DiaryId",selectedDiaryId);
+//                    intent.putExtra("SelectedPosition",selectedItemPosition);
+//                    intent.putExtra("EditMode",true);
+//                    startActivityForResult(intent,REQUEST_CODE_EDIT);
+//                    Log.e(TAG, "onClick: EDIT" );
+//                }else{
+//                    long date = CV_calendar.getSelectedCalendar().getTimeInMillis();
+//                    intent.putExtra("DiaryId","-1");
+//                    intent.putExtra("DiaryDate",date);
+//                    startActivityForResult(intent,REQUEST_CODE_ADD);
+//                    Log.e(TAG, "onClick: ADD");
+//                }
                 break;
             case R.id.navi_header://修改名字、头像
                 ProfileDialog profileDialog = new ProfileDialog();
