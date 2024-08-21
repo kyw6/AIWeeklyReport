@@ -118,7 +118,7 @@ public class MyMonthView extends MonthView {
 
         if (calendar.isCurrentDay()) {
             // 设置今天的日期文字为黄色
-            mCurDayTextPaint.setColor(Color.parseColor("#FFB21D"));
+            mCurDayTextPaint.setColor(Color.BLUE);
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top, mCurDayTextPaint);
             canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10, mCurDayLunarTextPaint);
         } else if (hasScheme) {
