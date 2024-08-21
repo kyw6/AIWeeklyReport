@@ -1,6 +1,11 @@
 package com.b18060412.superdiary;
 
+
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +18,7 @@ public class MainActivityNew extends AppCompatActivity {
     private TextView tvYearMonth;
     private CalendarView calendarView;//日期
     private TextView textViewReport;//周报展示区域
+    private ImageView generateWeeklyReportButton;//生成周报按钮
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,8 +27,18 @@ public class MainActivityNew extends AppCompatActivity {
         tvYearMonth = findViewById(R.id.tv_year_month);
         calendarView = findViewById(R.id.CV_calendar);
         textViewReport = findViewById(R.id.textView_weekly_report);
+        generateWeeklyReportButton = findViewById(R.id.BTN_gene);
         initTopText();//初始化顶部文字显示
         initReportText();//初始化周报展示区域
+        // 设置生成周报按钮点击事件
+        generateWeeklyReportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivityNew.this, GenerateWeeklyReportActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0); // 禁用动画效果
+            }
+        });
     }
 
     //初始化顶部文字显示
@@ -55,7 +71,7 @@ public class MainActivityNew extends AppCompatActivity {
                 int year = calendar.getYear();
                 int month = calendar.getMonth();
                 int day = calendar.getDay();
-                textViewReport.setText("今天是" + year + "年" + month + "月" + day + "日");
+                textViewReport.setText("选中了" + year + "年" + month + "月" + day + "日");
             }
         });
 
