@@ -50,8 +50,8 @@
         app:calendar_height="48dp"
         app:week_text_size="20sp"
         app:day_text_size="14sp"
-        app:select_mode="multi_mode"
-        app:month_view="com.b18060412.superdiary.calendar.MyMonthView"/>
+        app:select_mode="range_mode"
+        app:month_view="com.b18060412.superdiary.calendar.GeneReportMonthView"/>
 
     <FrameLayout
         android:id="@+id/FL_diary_list"
@@ -65,7 +65,27 @@
         android:background="@color/color_bg_home"
         android:visibility="visible"
         />
+    <FrameLayout
+        android:id="@+id/frameLayout_weekly_report"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:layout_constraintTop_toBottomOf="@+id/CV_calendar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="20dp"
+        android:background="@color/white">
 
+
+        <!-- 添加 TextView 到 FrameLayout 中 -->
+        <TextView
+            android:id="@+id/textView_weekly_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="选择日期范围"
+            android:textSize="20sp"
+            android:textColor="@color/color_today_text"
+            android:layout_gravity="center"/>
+    </FrameLayout>
 
     <ImageView
         android:id="@+id/BTN_gene"

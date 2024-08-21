@@ -1,6 +1,5 @@
 package com.b18060412.superdiary;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -11,11 +10,13 @@ import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GenerateWeeklyReportActivity extends AppCompatActivity {
     private TextView tvYearMonth;
     private CalendarView calendarView;//日期
+    private TextView showText;
     //写一个map，用于存储选中的日期
     private Map<String, Calendar> map = new HashMap<>();
 
@@ -25,8 +26,10 @@ public class GenerateWeeklyReportActivity extends AppCompatActivity {
         setContentView(R.layout.activity_generate_weekly_report);
         tvYearMonth = findViewById(R.id.tv_year_month);
         calendarView = findViewById(R.id.CV_calendar);
+        showText = findViewById(R.id.textView_weekly_report);
         initTopText();//初始化顶部文字显示
         initSelectedDate();//初始化日期选择
+        Log.d("kyw", "111 map.toString()" + map.toString());
     }
 
     //初始化顶部文字显示
@@ -52,25 +55,38 @@ public class GenerateWeeklyReportActivity extends AppCompatActivity {
 
     private void initSelectedDate() {
         // 设置日期选择监听器
-        calendarView.setOnCalendarSelectListener(new CalendarView.OnCalendarSelectListener() {
+        calendarView.setOnCalendarRangeSelectListener(new CalendarView.OnCalendarRangeSelectListener() {
             @Override
-            public void onCalendarOutOfRange(Calendar calendar) {
-
+            public void onCalendarSelectOutOfRange(Calendar calendar) {
+                // 用户选择了一个超出可选范围的日期
+                Log.d("kyw", "超出");
             }
 
             @Override
-            public void onCalendarSelect(Calendar calendar, boolean b) {
-                // 当选中日期时回调
-                calendarView.setSchemeDate(map);
-                //输出map，用Log 输出
-                Log.e("kyw", map.toString());
-                Log.e("kyw", "当前选中的日期：" + calendarView.getSelectedCalendar().toString());
-                calendarView.setSelectedColor(Color.RED, Color.BLUE, Color.GREEN);
-                //多选怎么做
-
+            public void onSelectOutOfRange(Calendar calendar, boolean isClick) {
+                // 处理超出范围的日期选择，可能要禁用一些选择或提示用户
+                if (isClick) {
+                    Log.d("kyw", "超出");
+                } else {
+                    // 处理非点击事件的超出范围逻辑
+                    Log.d("kyw", "没超出");
+                }
             }
 
+            @Override
+            public void onCalendarRangeSelect(Calendar calendar, boolean isClick) {
+                // 处理用户选择了一个日期范围
+                List<Calendar> selectedCalendars = calendarView.getSelectCalendarRange();
+//                Calendar start = selectedCalendars.get(0); // 开始日期
+//                Calendar end = selectedCalendars.get(selectedCalendars.size() - 1); // 结束日期
+//                Toast.makeText(GenerateWeeklyReportActivity.this, "选择的日期范围: " + start.toString() + " 到 " + end.toString(), Toast.LENGTH_SHORT).show();
+                Log.d("kyw", "选择的日期范围" + selectedCalendars.size());
+                Log.d("kyw", "选择的日期范围" + selectedCalendars.toString());
+                showText.setText(selectedCalendars.toString());
 
+            }
         });
+
+
     }
 }
