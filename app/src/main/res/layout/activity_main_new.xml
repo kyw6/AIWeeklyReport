@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tv_year_month"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginLeft="30dp"
+        android:text="2024年8月"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:gravity="center_vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dp"
+
+        />
+
+    <ImageView
+        android:id="@+id/IV_calendar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="center"
+        android:alpha="1"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_app_round_with_border"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dp"
+        />
+    <ImageButton
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="25dp"
+        android:id="@+id/BTN_add"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/button_add"/>
+
+    <ImageButton
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:layout_margin="25dp"
+        android:id="@+id/BTN_gene"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/button_gene"/>
+    <com.haibin.calendarview.CalendarView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/IV_calendar"
+        android:layout_marginTop="20dp"
+        app:calendar_padding="5dp"
+        app:week_start_with="mon"
+        android:id="@+id/CV_calendar"
+        android:visibility="visible"
+        app:scheme_text_color="@color/black"
+        app:current_day_text_color="@color/color_today_text"
+        app:current_day_lunar_text_color="@color/color_today_text"
+        app:month_view_show_mode="mode_fix"
+        app:lunar_text_size="0dp"
+        app:calendar_height="48dp"
+        app:week_text_size="20sp"
+        app:day_text_size="14sp"
+        app:month_view="com.b18060412.superdiary.calendar.MyMonthView"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
