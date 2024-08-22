@@ -20,6 +20,7 @@ public class MainActivityNew extends AppCompatActivity {
     private TextView textViewReport;//周报展示区域
     private ImageView generateWeeklyReportButton;//生成周报按钮
     private ImageView headRightButton;//头部右侧按钮
+    private ImageView startAddDiaryButton;//添加日记按钮
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class MainActivityNew extends AppCompatActivity {
         textViewReport = findViewById(R.id.textView_weekly_report);
         generateWeeklyReportButton = findViewById(R.id.BTN_gene);
         headRightButton = findViewById(R.id.IV_head_right);
+        startAddDiaryButton = findViewById(R.id.BTN_add);
         initTopText();//初始化顶部文字显示
         initReportText();//初始化周报展示区域
         // 设置生成周报按钮点击事件
@@ -48,6 +50,14 @@ public class MainActivityNew extends AppCompatActivity {
                 Intent intent = new Intent(MainActivityNew.this, MyPageActivity.class);
                 startActivity(intent);
 
+            }
+        });
+
+        startAddDiaryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivityNew.this, AddDiaryActivity.class);
+                startActivity(intent);
             }
         });
     }
