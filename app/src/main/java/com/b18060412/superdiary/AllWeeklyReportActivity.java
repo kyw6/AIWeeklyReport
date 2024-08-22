@@ -39,12 +39,6 @@ public class AllWeeklyReportActivity extends AppCompatActivity {
         backButton.setOnClickListener(v -> finish());
     }
     private void getDataList() {
-
-        fetchVerificationCode();
-        Log.d("kyw", "getDataList: "+diaryList.size());
-    }
-    private void fetchVerificationCode() {
-
         DiaryService diaryService = RetrofitClient.getClient().create(DiaryService.class);
         String startTime = "2024-07-14";
         String endTime = "2024-09-14";
@@ -70,6 +64,7 @@ public class AllWeeklyReportActivity extends AppCompatActivity {
             }
         });
     }
+
     private void NetworkConnectionError(){
         Toast.makeText(this, "网络连接失败", Toast.LENGTH_SHORT).show();
     }
