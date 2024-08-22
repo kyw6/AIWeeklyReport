@@ -5,6 +5,7 @@ public class DiaryResponse {
     private String Content;
 
 
+    //服务端返回的date："Date": "2024-08-14T00:00:00+08:00"
     // Getters and Setters
     public String getDate() {
         return Date;
