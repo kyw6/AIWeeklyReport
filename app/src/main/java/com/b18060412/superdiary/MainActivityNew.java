@@ -38,7 +38,7 @@ public class MainActivityNew extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivityNew.this, GenerateWeeklyReportActivity.class);
                 startActivity(intent);
-                overridePendingTransition(0, 0); // 禁用动画效果
+//                overridePendingTransition(0, 0); // 禁用动画效果
             }
         });
         // 设置头部右侧按钮点击事件
@@ -47,7 +47,7 @@ public class MainActivityNew extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivityNew.this, MyPageActivity.class);
                 startActivity(intent);
-                overridePendingTransition(0, 0); // 禁用动画效果
+
             }
         });
     }
