@@ -3,14 +3,22 @@ package com.b18060412.superdiary;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.b18060412.superdiary.adapter.AllDiaryAdapter;
 import com.b18060412.superdiary.adapter.DiaryItem;
+import com.b18060412.superdiary.network.DiaryService;
+import com.b18060412.superdiary.network.RetrofitClient;
+import com.b18060412.superdiary.network.responses.DiaryResponse;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AllWeeklyReportActivity extends AppCompatActivity {
     private AllDiaryAdapter adapter;
@@ -32,18 +40,37 @@ public class AllWeeklyReportActivity extends AppCompatActivity {
         backButton.setOnClickListener(v -> finish());
     }
     private void getDataList() {
-        diaryList.add(new DiaryItem("11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"));
-        diaryList.add(new DiaryItem("2222222222222222222"));
-        diaryList.add(new DiaryItem("3333333333333333333"));
-        diaryList.add(new DiaryItem("11111111111111111111"));
-        diaryList.add(new DiaryItem("2222222222222222222"));
-        diaryList.add(new DiaryItem("3333333333333333333"));
-        diaryList.add(new DiaryItem("11111111111111111111"));
-        diaryList.add(new DiaryItem("2222222222222222222"));
-        diaryList.add(new DiaryItem("3333333333333333333"));
-        diaryList.add(new DiaryItem("11111111111111111111"));
-        diaryList.add(new DiaryItem("2222222222222222222"));
-        diaryList.add(new DiaryItem("3333333333333333333"));
+
+        fetchVerificationCode();
         Log.d("kyw", "getDataList: "+diaryList.size());
+    }
+    private void fetchVerificationCode() {
+
+        DiaryService diaryService = RetrofitClient.getClient().create(DiaryService.class);
+        String startTime = "2024-07-14";
+        String endTime = "2024-09-14";
+        Call<DiaryResponse> call = diaryService.getDiaryData(startTime,endTime);
+        call.enqueue(new Callback<DiaryResponse>() {
+            @Override
+            public void onResponse(Call<DiaryResponse> call, Response<DiaryResponse> response) {
+                if (response.isSuccessful()) {
+                    // 请求成功，处理响应
+                    DiaryResponse responseData = response.body();
+                    if (responseData != null && responseData.getCode() == 200) {
+
+                    } else {
+
+                    }
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DiaryResponse> call, Throwable t) {
+                // 处理网络请求失败的情况
+                Toast.makeText(AllWeeklyReportActivity.this, "网络请求错误", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
