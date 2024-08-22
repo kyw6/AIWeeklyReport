@@ -98,7 +98,7 @@
         android:text="2024年8月"
         android:textSize="11sp"
         android:textColor="@color/black"
-        android:gravity="right"
+        android:gravity="center"
         app:layout_constraintStart_toStartOf="@+id/frameLayout_diary"
         app:layout_constraintEnd_toStartOf="@+id/textView_end"
         app:layout_constraintBottom_toBottomOf="@+id/frameLayout_diary"
