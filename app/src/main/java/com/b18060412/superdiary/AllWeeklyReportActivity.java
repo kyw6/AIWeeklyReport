@@ -60,15 +60,20 @@ public class AllWeeklyReportActivity extends AppCompatActivity {
                         adapter = new AllDiaryAdapter(diaryList);
                         recyclerView.setAdapter(adapter);
                     }else {
-                        Toast.makeText(AllWeeklyReportActivity.this, "获取数据失败", Toast.LENGTH_SHORT).show();
+                        NetworkConnectionError();
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<ApiResponse<DiaryResponse>> call, Throwable t) {
-
+                NetworkConnectionError();
             }
         });
+    }
+    private void NetworkConnectionError(){
+        diaryList.clear();
+        diaryList.add(new DiaryResponse("0","网络错误"));
+        adapter = new AllDiaryAdapter(diaryList);
+        recyclerView.setAdapter(adapter);
     }
 }
