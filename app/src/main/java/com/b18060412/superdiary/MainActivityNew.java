@@ -1,18 +1,17 @@
 package com.b18060412.superdiary;
 
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.b18060412.superdiary.adapter.AllDiaryAdapter;
 import com.b18060412.superdiary.network.DiaryService;
 import com.b18060412.superdiary.network.RetrofitClient;
 import com.b18060412.superdiary.network.responses.ApiResponse;
@@ -45,6 +44,11 @@ public class MainActivityNew extends AppCompatActivity {
     private ImageView generateWeeklyReportButton;//生成周报按钮
     private ImageView headRightButton;//头部右侧按钮
     private ImageView startAddDiaryButton;//添加日记按钮
+    //日报模块
+    private FrameLayout diaryFrameLayout;
+    private TextView textViewDiaryContent;
+    private TextView textViewDiaryDate;
+    private TextView textViewDiaryYearMonth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +56,16 @@ public class MainActivityNew extends AppCompatActivity {
         setContentView(R.layout.activity_main_new);
         tvYearMonth = findViewById(R.id.tv_year_month);
         calendarView = findViewById(R.id.CV_calendar);
-        textViewReport = findViewById(R.id.textView_weekly_report);
+        textViewReport = findViewById(R.id.textView_weekly_report_right);
         generateWeeklyReportButton = findViewById(R.id.BTN_gene);
         headRightButton = findViewById(R.id.IV_head_right);
         startAddDiaryButton = findViewById(R.id.BTN_add);
+        textViewDiaryContent = findViewById(R.id.textView_end);
+        textViewDiaryDate = findViewById(R.id.textView_start_day);
+        textViewDiaryYearMonth = findViewById(R.id.textView_start_year_month);
+        diaryFrameLayout = findViewById(R.id.frameLayout_diary);
+
+
         initTopText();//初始化顶部文字显示
         initReportText();//初始化周报展示区域
         initCalendar();//初始化日历，进行绘制已经填写的日报
@@ -147,11 +157,16 @@ public class MainActivityNew extends AppCompatActivity {
 
                 // 如果找到了对应的日记，显示其内容
                 if (diaryResponse != null) {
+                    //显示日记模块
+                    showDiaryModule();
                     // 显示日记内容
-                    textViewReport.setText("\n日记内容：" + diaryResponse.getContent());
+                    textViewDiaryContent.setText(diaryResponse.getContent());
+                    //显示日记日期
+                    textViewDiaryDate.setText(day + "");
+                    textViewDiaryYearMonth.setText(year + "年" + month + "月");
                 } else {
-                    // 如果没有找到对应的日记，提示用户
-                    textViewReport.setText("\n没有找到该日期的日记。");
+                    // 如果没有找到对应的日记，则隐藏日报模块
+                    hideDiaryModule();
                 }
             }
         });
@@ -162,13 +177,15 @@ public class MainActivityNew extends AppCompatActivity {
     private void initCalendar() {
         getDataList();//获取网络数据，获取到之后进行绘制
     }
+
     /**
      * 这个方法接收日记的日期 (date) 作为参数，并返回一个 SchemeCalendar 对象。
+     *
      * @return
      */
-    private com.haibin.calendarview.Calendar getSchemeCalendar(String dateString){
+    private com.haibin.calendarview.Calendar getSchemeCalendar(String dateString) {
         com.haibin.calendarview.Calendar calendar = new com.haibin.calendarview.Calendar();
-        Log.d("kyw", "onBindViewHolder: "+dateString);
+        Log.d("kyw", "onBindViewHolder: " + dateString);
         // 提取年月日字段
         OffsetDateTime dateTime = OffsetDateTime.parse(dateString, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         String year = String.valueOf(dateTime.getYear());
@@ -180,6 +197,7 @@ public class MainActivityNew extends AppCompatActivity {
         calendar.addScheme(new com.haibin.calendarview.Calendar.Scheme());
         return calendar;
     }
+
     private void updateYearMonthText(int year, int month) {
         String yearMonth = year + "年" + month + "月";
         tvYearMonth.setText(yearMonth);
@@ -190,26 +208,27 @@ public class MainActivityNew extends AppCompatActivity {
         DiaryService diaryService = RetrofitClient.getClient().create(DiaryService.class);
         String startTime = "2020-01-01";
         String endTime = "2029-01-01";
-        Call<ApiResponse<DiaryResponse>> call = diaryService.getDiaryData(startTime,endTime);
+        Call<ApiResponse<DiaryResponse>> call = diaryService.getDiaryData(startTime, endTime);
         call.enqueue(new Callback<ApiResponse<DiaryResponse>>() {
             @Override
             public void onResponse(Call<ApiResponse<DiaryResponse>> call, Response<ApiResponse<DiaryResponse>> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     ApiResponse<DiaryResponse> apiResponse = response.body();
-                    if (apiResponse != null && apiResponse.getData() != null){
+                    if (apiResponse != null && apiResponse.getData() != null) {
                         diaryList = apiResponse.getData();
-                        Log.d("kyw", "onResponse: "+diaryList.size());
+                        Log.d("kyw", "onResponse: " + diaryList.size());
 
-                        for(DiaryResponse item:diaryList){
-                            map.put(getSchemeCalendar(item.getDate()).toString(),getSchemeCalendar(item.getDate()));
+                        for (DiaryResponse item : diaryList) {
+                            map.put(getSchemeCalendar(item.getDate()).toString(), getSchemeCalendar(item.getDate()));
                         }
                         calendarView.setSchemeDate(map);
 
-                    }else {
+                    } else {
                         NetworkConnectionError();
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<ApiResponse<DiaryResponse>> call, Throwable t) {
                 NetworkConnectionError();
@@ -217,7 +236,23 @@ public class MainActivityNew extends AppCompatActivity {
         });
     }
 
-    private void NetworkConnectionError(){
+    private void NetworkConnectionError() {
         Toast.makeText(this, "网络连接失败", Toast.LENGTH_SHORT).show();
+    }
+
+    //显示日记模块
+    private void showDiaryModule() {
+        diaryFrameLayout.setVisibility(View.VISIBLE);
+        textViewDiaryContent.setVisibility(View.VISIBLE);
+        textViewDiaryDate.setVisibility(View.VISIBLE);
+        textViewDiaryYearMonth.setVisibility(View.VISIBLE);
+    }
+
+    //隐藏日记模块
+    private void hideDiaryModule() {
+        diaryFrameLayout.setVisibility(View.GONE);
+        textViewDiaryContent.setVisibility(View.GONE);
+        textViewDiaryDate.setVisibility(View.GONE);
+        textViewDiaryYearMonth.setVisibility(View.GONE);
     }
 }
