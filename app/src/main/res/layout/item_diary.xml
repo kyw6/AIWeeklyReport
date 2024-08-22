@@ -17,16 +17,31 @@
         android:background="@drawable/rounded_all_diary_background"
         />
     <TextView
-        android:id="@+id/textView_start"
+        android:id="@+id/textView_start_day"
         android:layout_width="80dp"
-        android:layout_height="120dp"
-        android:text="2024年\n8月\n12日"
+        android:layout_height="wrap_content"
+        android:text="12日"
         android:textSize="20sp"
         android:textColor="@color/black"
+        app:layout_constraintVertical_chainStyle="packed"
         android:gravity="center"
         app:layout_constraintStart_toStartOf="@+id/frameLayout"
-        app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
+        app:layout_constraintEnd_toStartOf="@+id/textView_end"
+        app:layout_constraintBottom_toTopOf="@+id/textView_start_year_month"
         app:layout_constraintTop_toTopOf="@+id/frameLayout"
+        />
+    <TextView
+        android:id="@+id/textView_start_year_month"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="2024年8月"
+        android:textSize="11sp"
+        android:textColor="@color/black"
+        android:gravity="right"
+        app:layout_constraintStart_toStartOf="@+id/frameLayout"
+        app:layout_constraintEnd_toStartOf="@+id/textView_end"
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
+        app:layout_constraintTop_toBottomOf="@+id/textView_start_day"
         />
 
     <TextView
@@ -40,7 +55,6 @@
         android:maxLines="5"
         android:ellipsize="end"
         android:padding="10dp"
-        app:layout_constraintStart_toEndOf="@+id/textView_start"
         app:layout_constraintEnd_toEndOf="@+id/frameLayout"
         app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
         app:layout_constraintTop_toTopOf="@+id/frameLayout"
