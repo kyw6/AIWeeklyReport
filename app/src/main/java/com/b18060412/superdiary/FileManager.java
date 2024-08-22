@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.UUID;
-
+//老项目中的，不用在意
 public class FileManager {
     private static final String TAG = "FileManager";
 

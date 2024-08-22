@@ -2,7 +2,7 @@ package com.b18060412.superdiary;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
+//老项目中的，不用在意
 public class ProfileManager {
     public static String getName(Context context) {
         SharedPreferences settings = context.getSharedPreferences("profileName", Context.MODE_PRIVATE);

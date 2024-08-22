@@ -38,6 +38,7 @@ import java.util.Calendar;
 
 import info.hoang8f.android.segmented.SegmentedGroup;
 
+//老项目中的，不用在意
 public class DiaryActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
     private static final String TAG = "DiaryActivity";//  日记浏览与编辑
 
