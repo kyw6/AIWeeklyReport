@@ -71,9 +71,6 @@ public class AllWeeklyReportActivity extends AppCompatActivity {
         });
     }
     private void NetworkConnectionError(){
-        diaryList.clear();
-        diaryList.add(new DiaryResponse("0","网络错误"));
-        adapter = new AllDiaryAdapter(diaryList);
-        recyclerView.setAdapter(adapter);
+        Toast.makeText(this, "网络连接失败", Toast.LENGTH_SHORT).show();
     }
 }

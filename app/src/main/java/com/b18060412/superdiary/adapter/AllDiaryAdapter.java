@@ -32,23 +32,16 @@ public class AllDiaryAdapter extends RecyclerView.Adapter<AllDiaryAdapter.DiaryV
     @Override
     public void onBindViewHolder(@NonNull DiaryViewHolder holder, int position) {
         DiaryResponse diaryItem = DiaryList.get(position);
-        if (diaryItem.getContent().equals("网络错误")){
-            holder.textViewTimeDay.setText("0");
-            holder.textViewTimeMonthYear.setText("0000" + "年" + "00" + "月");
-            holder.textViewContent.setText("网络请求失败了~抱歉");
-        }else {
-            String dateString = diaryItem.getDate();
-            Log.d("kyw", "onBindViewHolder: "+dateString);
-            // 提取年月日字段
-            OffsetDateTime dateTime = OffsetDateTime.parse(dateString, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-            String year = String.valueOf(dateTime.getYear());
-            String month = String.format("%d", dateTime.getMonthValue());
-            String day = String.format("%d", dateTime.getDayOfMonth());
-            holder.textViewTimeDay.setText(day);
-            holder.textViewTimeMonthYear.setText(year + "年" + month + "月");
-            holder.textViewContent.setText(diaryItem.getContent());
-        }
-
+        holder.textViewContent.setText(diaryItem.getContent());
+        String dateString = diaryItem.getDate();
+        Log.d("kyw", "onBindViewHolder: "+dateString);
+        // 提取年月日字段
+        OffsetDateTime dateTime = OffsetDateTime.parse(dateString, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        String year = String.valueOf(dateTime.getYear());
+        String month = String.format("%d", dateTime.getMonthValue());
+        String day = String.format("%d", dateTime.getDayOfMonth());
+        holder.textViewTimeDay.setText(day);
+        holder.textViewTimeMonthYear.setText(year + "年" + month + "月");
 
     }
 

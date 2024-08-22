@@ -4,10 +4,7 @@ public class DiaryResponse {
     private String Date;
     private String Content;
 
-    public DiaryResponse(String Date, String Content){
-        this.Date = Date;
-        this.Content = Content;
-    }
+
     // Getters and Setters
     public String getDate() {
         return Date;
