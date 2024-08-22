@@ -9,9 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.b18060412.superdiary.adapter.AllDiaryAdapter;
-import com.b18060412.superdiary.adapter.DiaryItem;
 import com.b18060412.superdiary.network.DiaryService;
 import com.b18060412.superdiary.network.RetrofitClient;
+import com.b18060412.superdiary.network.responses.ApiResponse;
 import com.b18060412.superdiary.network.responses.DiaryResponse;
 
 import java.util.List;
@@ -23,7 +23,7 @@ import retrofit2.Response;
 public class AllWeeklyReportActivity extends AppCompatActivity {
     private AllDiaryAdapter adapter;
     private androidx.recyclerview.widget.RecyclerView recyclerView;
-    private List<DiaryItem> diaryList = new java.util.ArrayList<>();
+    private List<DiaryResponse> diaryList = new java.util.ArrayList<>();
     private ImageView backButton;//头部返回按钮
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +34,7 @@ public class AllWeeklyReportActivity extends AppCompatActivity {
         //设置布局管理器
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         getDataList();//获取数据
-        adapter = new AllDiaryAdapter(diaryList);
-        recyclerView.setAdapter(adapter);
+
 
         backButton.setOnClickListener(v -> finish());
     }
@@ -49,27 +48,26 @@ public class AllWeeklyReportActivity extends AppCompatActivity {
         DiaryService diaryService = RetrofitClient.getClient().create(DiaryService.class);
         String startTime = "2024-07-14";
         String endTime = "2024-09-14";
-        Call<DiaryResponse> call = diaryService.getDiaryData(startTime,endTime);
-        call.enqueue(new Callback<DiaryResponse>() {
+        Call<ApiResponse<DiaryResponse>> call = diaryService.getDiaryData(startTime,endTime);
+        call.enqueue(new Callback<ApiResponse<DiaryResponse>>() {
             @Override
-            public void onResponse(Call<DiaryResponse> call, Response<DiaryResponse> response) {
-                if (response.isSuccessful()) {
-                    // 请求成功，处理响应
-                    DiaryResponse responseData = response.body();
-                    if (responseData != null && responseData.getCode() == 200) {
-
-                    } else {
-
+            public void onResponse(Call<ApiResponse<DiaryResponse>> call, Response<ApiResponse<DiaryResponse>> response) {
+                if (response.isSuccessful()){
+                    ApiResponse<DiaryResponse> apiResponse = response.body();
+                    if (apiResponse != null && apiResponse.getData() != null){
+                        diaryList = apiResponse.getData();
+                        Log.d("kyw", "onResponse: "+diaryList.size());
+                        adapter = new AllDiaryAdapter(diaryList);
+                        recyclerView.setAdapter(adapter);
+                    }else {
+                        Toast.makeText(AllWeeklyReportActivity.this, "获取数据失败", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-
                 }
             }
 
             @Override
-            public void onFailure(Call<DiaryResponse> call, Throwable t) {
-                // 处理网络请求失败的情况
-                Toast.makeText(AllWeeklyReportActivity.this, "网络请求错误", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<ApiResponse<DiaryResponse>> call, Throwable t) {
+
             }
         });
     }
