@@ -19,6 +19,7 @@ public class MainActivityNew extends AppCompatActivity {
     private CalendarView calendarView;//日期
     private TextView textViewReport;//周报展示区域
     private ImageView generateWeeklyReportButton;//生成周报按钮
+    private ImageView headRightButton;//头部右侧按钮
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class MainActivityNew extends AppCompatActivity {
         calendarView = findViewById(R.id.CV_calendar);
         textViewReport = findViewById(R.id.textView_weekly_report);
         generateWeeklyReportButton = findViewById(R.id.BTN_gene);
+        headRightButton = findViewById(R.id.IV_head_right);
         initTopText();//初始化顶部文字显示
         initReportText();//初始化周报展示区域
         // 设置生成周报按钮点击事件
@@ -35,6 +37,15 @@ public class MainActivityNew extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivityNew.this, GenerateWeeklyReportActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0); // 禁用动画效果
+            }
+        });
+        // 设置头部右侧按钮点击事件
+        headRightButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivityNew.this, MyPageActivity.class);
                 startActivity(intent);
                 overridePendingTransition(0, 0); // 禁用动画效果
             }

@@ -20,7 +20,7 @@
         />
 
     <ImageView
-        android:id="@+id/IV_calendar"
+        android:id="@+id/IV_head_right"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginRight="20dp"
@@ -36,7 +36,7 @@
     <com.haibin.calendarview.CalendarView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/IV_calendar"
+        app:layout_constraintTop_toBottomOf="@+id/IV_head_right"
         android:layout_marginTop="20dp"
         app:calendar_padding="5dp"
         app:week_start_with="mon"

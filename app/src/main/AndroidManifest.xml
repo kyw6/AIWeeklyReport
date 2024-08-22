@@ -58,6 +58,10 @@
         <activity android:name=".MainActivity">
 
         </activity>
+
+        <activity android:name=".MyPageActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
     </application>
 
 </manifest>
