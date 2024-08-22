@@ -65,28 +65,132 @@
         android:visibility="visible"
         />
 
+    <!--    日报模块-->
     <FrameLayout
-        android:id="@+id/frameLayout_weekly_report"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:layout_constraintTop_toBottomOf="@+id/CV_calendar"
+        android:id="@+id/frameLayout_diary"
+        android:layout_width="361dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="20dp"
-        android:background="@drawable/rounded_all_diary_background">
-
-
-    <!-- 添加 TextView 到 FrameLayout 中 -->
+        app:layout_constraintTop_toBottomOf="@+id/CV_calendar"
+        android:background="@drawable/rounded_all_diary_background"
+        />
     <TextView
-        android:id="@+id/textView_weekly_report"
-        android:layout_width="wrap_content"
+        android:id="@+id/textView_start_day"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
-        android:text="尝试生成一份周报吧"
+        android:text="12日"
         android:textSize="20sp"
-        android:textColor="@color/color_today_text"
-        android:layout_gravity="center"/>
-    </FrameLayout>
+        android:textColor="@color/black"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="@+id/frameLayout_diary"
+        app:layout_constraintEnd_toStartOf="@+id/textView_end"
+        app:layout_constraintBottom_toTopOf="@+id/textView_start_year_month"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout_diary"
+        />
+    <TextView
+        android:id="@+id/textView_start_year_month"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="2024年8月"
+        android:textSize="11sp"
+        android:textColor="@color/black"
+        android:gravity="right"
+        app:layout_constraintStart_toStartOf="@+id/frameLayout_diary"
+        app:layout_constraintEnd_toStartOf="@+id/textView_end"
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayout_diary"
+        app:layout_constraintTop_toBottomOf="@+id/textView_start_day"
+        />
 
+    <TextView
+        android:id="@+id/textView_end"
+        android:layout_width="243dp"
+        android:layout_height="120dp"
+        android:text="这里是日报的内容"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_marginStart="20dp"
+        android:maxLines="5"
+        android:ellipsize="end"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="30dp"
+        app:layout_constraintEnd_toEndOf="@+id/frameLayout_diary"
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayout_diary"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout_diary"
+        />
+
+
+
+<!--    周报模块-->
+    <FrameLayout
+        android:id="@+id/frameLayout_weekly_report"
+        android:layout_width="361dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout_diary"
+        android:background="@drawable/rounded_all_diary_background"
+        />
+
+    <TextView
+        android:id="@+id/textView_weekly_report_left"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="本周周报"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="@+id/frameLayout_weekly_report"
+        app:layout_constraintEnd_toStartOf="@+id/textView_weekly_report_right"
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayout_weekly_report"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout_weekly_report"
+        />
+
+    <TextView
+        android:id="@+id/textView_weekly_report_right"
+        android:layout_width="243dp"
+        android:layout_height="120dp"
+        android:text="本周还没有生成周报\n尝试生成一份吧"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_marginStart="20dp"
+        android:maxLines="5"
+        android:ellipsize="end"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="30dp"
+        app:layout_constraintEnd_toEndOf="@+id/frameLayout_weekly_report"
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayout_weekly_report"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout_weekly_report"
+        />
+
+<!--    <FrameLayout-->
+<!--        android:id="@+id/frameLayout_weekly_report"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="200dp"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/frameLayout_diary"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        android:layout_margin="20dp"-->
+<!--        android:background="@drawable/rounded_all_diary_background">-->
+
+
+<!--        &lt;!&ndash; 添加 TextView 到 FrameLayout 中 &ndash;&gt;-->
+<!--        <TextView-->
+<!--            android:id="@+id/textView_weekly_report"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="尝试生成一份周报吧"-->
+<!--            android:textSize="20sp"-->
+<!--            android:textColor="@color/color_today_text"-->
+<!--            android:layout_gravity="center"/>-->
+<!--    </FrameLayout>-->
 
     <ImageView
         android:id="@+id/BTN_gene"
@@ -108,5 +212,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@drawable/button_add"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
