@@ -21,7 +21,7 @@ import com.b18060412.superdiary.db.DiaryItem;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
-
+//老项目中的，不用在意
 public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> {
 
     private List<DiaryItem> DiaryList;

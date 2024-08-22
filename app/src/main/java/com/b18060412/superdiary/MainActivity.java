@@ -37,7 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
+//老项目中的，不用在意
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,CalendarView.OnCalendarSelectListener {
     private static final String TAG = "MainActivity";
     private DrawerLayout drawerLayout;
