@@ -15,6 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:background="@color/color_today_text"
         />
+
     <ImageView
         android:id="@+id/IV_head_right"
         android:layout_width="70dp"
@@ -27,6 +28,18 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="50dp"
         />
+    <ImageView
+        android:id="@+id/IV_back_button"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        android:src="@drawable/back_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,6 +50,63 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/IV_head_right"
+        />
+
+    <TextView
+        android:id="@+id/TV_all_report"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="查看所有日报"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="40dp"
+        android:drawableLeft="@drawable/ic_wallet"
+        android:drawablePadding="21dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout"
+        />
+
+    <TextView
+        android:id="@+id/TV_all_diary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="查看所有周报"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:layout_marginTop="22dp"
+        android:layout_marginStart="40dp"
+        android:drawableLeft="@drawable/ic_calendar"
+        android:drawablePadding="21dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TV_all_report"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="设置"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:layout_marginTop="22dp"
+        android:layout_marginStart="40dp"
+        android:drawableLeft="@drawable/ic_setting"
+        android:drawablePadding="21dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TV_all_diary"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="退出登录"
+        android:textColor="@color/color_today_text"
+        android:textSize="16sp"
+        android:layout_marginTop="22dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="120dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
