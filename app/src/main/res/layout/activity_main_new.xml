@@ -73,7 +73,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="20dp"
-        android:background="@color/white">
+        android:background="@drawable/rounded_all_diary_background">
 
 
     <!-- 添加 TextView 到 FrameLayout 中 -->
