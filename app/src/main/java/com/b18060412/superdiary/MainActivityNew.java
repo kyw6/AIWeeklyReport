@@ -325,7 +325,6 @@ public class MainActivityNew extends AppCompatActivity {
         for (DiaryResponse item : diaryList) {
            String date = MyDateStringUtil.getFirstTenChars(item.getDate());
            String selectDate = MyDateStringUtil.formatDateToTransfer(selectDay, selectMonth, selectYear);
-           Log.d("kyw", "showBackDiary: " + date + " " + selectDate);
             //如果选中的日期 和 list中的日期相同，则显示日记模块
             if (date.equals(selectDate)) {
                 // 显示选中的日期
