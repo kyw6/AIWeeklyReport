@@ -33,6 +33,7 @@ public class AddDiaryActivity extends AppCompatActivity {
     private String selectDay = "";
     private String selectMonth = "";
     private String selectYear = "";
+    private String selectDiaryContent = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +56,17 @@ public class AddDiaryActivity extends AppCompatActivity {
             selectDay = intent.getStringExtra("day");
             selectMonth = intent.getStringExtra("month");
             selectYear = intent.getStringExtra("year");
-            Log.d("kyw","传输过来的是：" +selectDay + " " +selectMonth + " " + selectYear);
+            selectDiaryContent = intent.getStringExtra("content");
+            Log.d("kyw","传输过来的是：" +selectDay + " " +selectMonth + " " + selectYear + " " + selectDiaryContent);
         }
 
         // 获取用户选中的日期并设置到TextView中
         tvDate.setText(MyDateStringUtil.formatDateToChinese(selectDay,selectMonth,selectYear));
 
+        //获取日记内容，并展示
+        if (selectDiaryContent != null){
+            etReport.setText(selectDiaryContent);
+        }
         // 设置按钮点击事件
         btnCancel.setOnClickListener(v -> finish());
 
@@ -117,6 +123,7 @@ public class AddDiaryActivity extends AppCompatActivity {
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     Log.d("ServerResponse", "发送成功，响应代码：" + responseCode + "，响应消息：" + responseMessage);
                     Toast.makeText(this, "添加日报成功！", Toast.LENGTH_SHORT).show();
+                    finish();
                 } else {
                     Log.e("ServerError", "发送失败，错误代码：" + responseCode + "，错误消息：" + responseMessage);
                     Toast.makeText(this, "发送失败，错误代码：" + responseCode + "，错误消息：" + responseMessage, Toast.LENGTH_LONG).show();
