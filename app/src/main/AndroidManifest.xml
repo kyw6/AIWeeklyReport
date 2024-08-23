@@ -64,7 +64,7 @@
             android:windowSoftInputMode="adjustPan">
         </activity>
 
-        <activity android:name=".AllWeeklyReportActivity"
+        <activity android:name=".AllDiaryActivity"
             android:windowSoftInputMode="adjustPan">
         </activity>
 
