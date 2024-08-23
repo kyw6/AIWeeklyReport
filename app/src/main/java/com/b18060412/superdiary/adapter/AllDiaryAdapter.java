@@ -34,7 +34,7 @@ public class AllDiaryAdapter extends RecyclerView.Adapter<AllDiaryAdapter.DiaryV
         DiaryResponse diaryItem = DiaryList.get(position);
         holder.textViewContent.setText(diaryItem.getContent());
         String dateString = diaryItem.getDate();
-        Log.d("kyw", "onBindViewHolder: "+dateString);
+//        Log.d("kyw", "onBindViewHolder: "+dateString);
         // 提取年月日字段
         OffsetDateTime dateTime = OffsetDateTime.parse(dateString, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         String year = String.valueOf(dateTime.getYear());
