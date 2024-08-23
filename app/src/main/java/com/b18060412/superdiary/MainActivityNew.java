@@ -74,7 +74,6 @@ public class MainActivityNew extends AppCompatActivity {
 
         initTopText();//初始化顶部文字显示
         initReportText();//初始化周报展示区域
-//        initCalendar();//初始化日历，进行绘制已经填写的日报
         // 设置生成周报按钮点击事件
         generateWeeklyReportButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +92,7 @@ public class MainActivityNew extends AppCompatActivity {
 
             }
         });
-
+        // 设置添加日记按钮点击事件，如果有日记，则展示，否则就是添加
         startAddDiaryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +100,37 @@ public class MainActivityNew extends AppCompatActivity {
                 intent.putExtra("day", selectDay);
                 intent.putExtra("month", selectMonth);
                 intent.putExtra("year", selectYear);
+                String str = MyDateStringUtil.formatDateToTransfer(selectDay, selectMonth, selectYear);
+                String findKey = MyDateStringUtil.formatDateToServer(str);
+                //遍历map，根据key值找到对应的value，即DiaryResponse对象
+                //遍历diaryList，找到对应的日记，获取日记内容
+                for (DiaryResponse diary : diaryList) {
+                    if (diary.getDate().equals(findKey)) {
+                        intent.putExtra("content", diary.getContent());
+                        break;
+                    }
+                }
+                startActivity(intent);
+            }
+        });
+        // 设置日报模块点击事件：携带日历内容跳转到日记编辑页面
+        diaryFrameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivityNew.this, AddDiaryActivity.class);
+                intent.putExtra("day", selectDay);
+                intent.putExtra("month", selectMonth);
+                intent.putExtra("year", selectYear);
+                String str = MyDateStringUtil.formatDateToTransfer(selectDay, selectMonth, selectYear);
+                String findKey = MyDateStringUtil.formatDateToServer(str);
+                //遍历map，根据key值找到对应的value，即DiaryResponse对象
+                //遍历diaryList，找到对应的日记，获取日记内容
+                for (DiaryResponse diary : diaryList) {
+                    if (diary.getDate().equals(findKey)) {
+                        intent.putExtra("content", diary.getContent());
+                        break;
+                    }
+                }
                 startActivity(intent);
             }
         });
@@ -109,7 +139,7 @@ public class MainActivityNew extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        initCalendar();//重新初始化日历，重新发送请求，数据在list中。
+        initCalendar();//初始化日历，重新发送请求，数据在list中。
     }
 
 
@@ -143,6 +173,7 @@ public class MainActivityNew extends AppCompatActivity {
                 selectDay = String.valueOf(calendar.getDay());
                 selectMonth = String.valueOf(calendar.getMonth());
                 selectYear = String.valueOf(calendar.getYear());
+                Log.d("kyw", "选中的日期是：" + selectDay + " " + selectMonth + " " + selectYear);
 
                 int year = calendar.getYear();
                 int month = calendar.getMonth();
@@ -241,6 +272,7 @@ public class MainActivityNew extends AppCompatActivity {
                         Log.d("kyw", "onResponse: " + diaryList.size());
 
                         for (DiaryResponse item : diaryList) {
+                            //key key: 2024-08-20T00:00:00+08:00 value 2024-08-20T00:00:00+08:00
                             map.put(getSchemeCalendar(item.getDate()).toString(), getSchemeCalendar(item.getDate()));
                         }
                         //绘制日历Scheme
@@ -284,8 +316,11 @@ public class MainActivityNew extends AppCompatActivity {
 
     //显示用户添加成功后，返回的日记模块，遍历日记list，找到用户添加的日记，显示到首页
     private void showBackDiary() {
+        //这里解决首次进入app时，selectMonth selectDay selectYear为空，导致无法显示今天已经填写的日记模块
         if (TextUtils.isEmpty(selectMonth) || TextUtils.isEmpty(selectDay) || TextUtils.isEmpty(selectYear)){
-            return;
+            selectMonth = String.valueOf(calendarView.getCurMonth());
+            selectDay = String.valueOf(calendarView.getCurDay());
+            selectYear = String.valueOf(calendarView.getCurYear());
         }
         for (DiaryResponse item : diaryList) {
            String date = MyDateStringUtil.getFirstTenChars(item.getDate());
