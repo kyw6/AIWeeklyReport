@@ -3,6 +3,7 @@ package com.b18060412.superdiary;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -16,6 +17,7 @@ import com.b18060412.superdiary.network.DiaryService;
 import com.b18060412.superdiary.network.RetrofitClient;
 import com.b18060412.superdiary.network.responses.ApiResponse;
 import com.b18060412.superdiary.network.responses.DiaryResponse;
+import com.b18060412.superdiary.util.MyDateStringUtil;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
 
@@ -50,6 +52,10 @@ public class MainActivityNew extends AppCompatActivity {
     private TextView textViewDiaryDate;
     private TextView textViewDiaryYearMonth;
 
+    private String selectDay = "";
+    private String selectMonth = "";
+    private String selectYear = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +74,7 @@ public class MainActivityNew extends AppCompatActivity {
 
         initTopText();//初始化顶部文字显示
         initReportText();//初始化周报展示区域
-        initCalendar();//初始化日历，进行绘制已经填写的日报
+//        initCalendar();//初始化日历，进行绘制已经填写的日报
         // 设置生成周报按钮点击事件
         generateWeeklyReportButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,10 +98,20 @@ public class MainActivityNew extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivityNew.this, AddDiaryActivity.class);
+                intent.putExtra("day", selectDay);
+                intent.putExtra("month", selectMonth);
+                intent.putExtra("year", selectYear);
                 startActivity(intent);
             }
         });
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initCalendar();//重新初始化日历，重新发送请求，数据在list中。
+    }
+
 
     //初始化顶部文字显示
     private void initTopText() {
@@ -124,6 +140,10 @@ public class MainActivityNew extends AppCompatActivity {
             @Override
             public void onCalendarSelect(Calendar calendar, boolean b) {
                 // 当日期被选中时回调
+                selectDay = String.valueOf(calendar.getDay());
+                selectMonth = String.valueOf(calendar.getMonth());
+                selectYear = String.valueOf(calendar.getYear());
+
                 int year = calendar.getYear();
                 int month = calendar.getMonth();
                 int day = calendar.getDay();
@@ -135,6 +155,7 @@ public class MainActivityNew extends AppCompatActivity {
 
                 // 在 diaryList 中查找对应的日记
                 DiaryResponse diaryResponse = null;
+
                 for (DiaryResponse diary : diaryList) {
                     try {
                         // 解析 DiaryResponse 中的日期
@@ -185,7 +206,7 @@ public class MainActivityNew extends AppCompatActivity {
      */
     private com.haibin.calendarview.Calendar getSchemeCalendar(String dateString) {
         com.haibin.calendarview.Calendar calendar = new com.haibin.calendarview.Calendar();
-        Log.d("kyw", "onBindViewHolder: " + dateString);
+//        Log.d("kyw", "onBindViewHolder: " + dateString);
         // 提取年月日字段
         OffsetDateTime dateTime = OffsetDateTime.parse(dateString, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         String year = String.valueOf(dateTime.getYear());
@@ -215,13 +236,17 @@ public class MainActivityNew extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     ApiResponse<DiaryResponse> apiResponse = response.body();
                     if (apiResponse != null && apiResponse.getData() != null) {
+                        diaryList.clear();
                         diaryList = apiResponse.getData();
                         Log.d("kyw", "onResponse: " + diaryList.size());
 
                         for (DiaryResponse item : diaryList) {
                             map.put(getSchemeCalendar(item.getDate()).toString(), getSchemeCalendar(item.getDate()));
                         }
+                        //绘制日历Scheme
                         calendarView.setSchemeDate(map);
+                        //刚添加完日历回来的话，显示日历模块
+                        showBackDiary();
 
                     } else {
                         NetworkConnectionError();
@@ -255,4 +280,29 @@ public class MainActivityNew extends AppCompatActivity {
         textViewDiaryDate.setVisibility(View.GONE);
         textViewDiaryYearMonth.setVisibility(View.GONE);
     }
+
+
+    //显示用户添加成功后，返回的日记模块，遍历日记list，找到用户添加的日记，显示到首页
+    private void showBackDiary() {
+        if (TextUtils.isEmpty(selectMonth) || TextUtils.isEmpty(selectDay) || TextUtils.isEmpty(selectYear)){
+            return;
+        }
+        for (DiaryResponse item : diaryList) {
+           String date = MyDateStringUtil.getFirstTenChars(item.getDate());
+           String selectDate = MyDateStringUtil.formatDateToTransfer(selectDay, selectMonth, selectYear);
+           Log.d("kyw", "showBackDiary: " + date + " " + selectDate);
+            //如果选中的日期 和 list中的日期相同，则显示日记模块
+            if (date.equals(selectDate)) {
+                // 显示选中的日期
+                textViewDiaryContent.setText(item.getContent());
+                //显示日记日期
+                textViewDiaryDate.setText(selectDay);
+                textViewDiaryYearMonth.setText(selectYear + "年" + selectMonth + "月");
+                showDiaryModule();
+                return;
+            }
+        }
+        hideDiaryModule();
+    }
+
 }

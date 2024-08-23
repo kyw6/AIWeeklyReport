@@ -3,7 +3,7 @@ package com.b18060412.superdiary;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.b18060412.superdiary.util.MyDateStringUtil;
+
 import org.json.JSONObject;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -27,6 +30,9 @@ import java.util.concurrent.Executors;
 public class AddDiaryActivity extends AppCompatActivity {
 
     private ExecutorService executorService;
+    private String selectDay = "";
+    private String selectMonth = "";
+    private String selectYear = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +48,18 @@ public class AddDiaryActivity extends AppCompatActivity {
         ImageButton btnCancel = findViewById(R.id.btn_cancel);
         EditText etReport = findViewById(R.id.et_report);
 
-        // 获取当前日期并设置到TextView中
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日", Locale.getDefault());
-        String currentDate = sdf.format(new Date());
-        tvDate.setText(currentDate);
+
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            selectDay = intent.getStringExtra("day");
+            selectMonth = intent.getStringExtra("month");
+            selectYear = intent.getStringExtra("year");
+            Log.d("kyw","传输过来的是：" +selectDay + " " +selectMonth + " " + selectYear);
+        }
+
+        // 获取用户选中的日期并设置到TextView中
+        tvDate.setText(MyDateStringUtil.formatDateToChinese(selectDay,selectMonth,selectYear));
 
         // 设置按钮点击事件
         btnCancel.setOnClickListener(v -> finish());
@@ -60,7 +74,8 @@ public class AddDiaryActivity extends AppCompatActivity {
     private void sendDataToServer(String date, String content) {
         try {
             String userId = "123456";
-            date = "2024-08-20";
+            date = MyDateStringUtil.formatDateToTransfer(selectDay,selectMonth,selectYear);
+            Log.d("kyw","选中的日期，格式化之后是：" + date);
             // 设置请求的URL
             URL url = new URL("http://101.43.134.112:8080/record/daily");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -101,7 +116,7 @@ public class AddDiaryActivity extends AppCompatActivity {
             runOnUiThread(() -> {
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     Log.d("ServerResponse", "发送成功，响应代码：" + responseCode + "，响应消息：" + responseMessage);
-                    Toast.makeText(this, "数据已发送成功！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "添加日报成功！", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.e("ServerError", "发送失败，错误代码：" + responseCode + "，错误消息：" + responseMessage);
                     Toast.makeText(this, "发送失败，错误代码：" + responseCode + "，错误消息：" + responseMessage, Toast.LENGTH_LONG).show();
@@ -117,6 +132,7 @@ public class AddDiaryActivity extends AppCompatActivity {
             });
         }
     }
+
 
 
 //    private void sendDataToServer(String date, String content) {
