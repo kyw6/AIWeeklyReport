@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="blue">#67B5E6</color>
+    <color name="edittext_hint">#d4d2d4</color>
+    <color name="toolbar">#989798</color>
+    <color name="date_divider">#9F9D9F</color>
+
+    <color name="color_today_text">#FFB21D</color>
+<!--    首页背景灰色-->
+    <color name="color_bg_home">#F7F7F7</color>
+<!--    所有日报、周报背景灰色-->
+    <color name="color_bg_all_report">#40AFAFAF</color>
+
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="colorBackground">#EEE9E9</color>
+    <color name="colorBackground2">#BBBBBB</color>
+    <color name="textColor">#055287</color>
+    <color name="LineColor1">#FCB11B</color>
+    <color name="LineColor2">#F06292</color>
+    <color name="RedColor2">#F1286C</color>
+    <color name="percentColor">#80055287</color>
+</resources>

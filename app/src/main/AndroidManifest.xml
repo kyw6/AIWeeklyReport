@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.b18060412.superdiary">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+    <uses-feature android:name="android.hardware.location.network" />
+    <uses-feature android:name="android.hardware.location.gps" />
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:theme="@style/Theme.SuperDiary">
+        <!-- 定位需要的服务 -->
+        <service android:name="com.amap.api.location.APSService"/>
+
+        <!--Ucrop-->
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="6855cc5045b9b29cd9352edb6a2a4d7e"/>
+        <activity android:name=".DiaryActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+        <activity android:name=".MainActivityNew"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".GenerateWeeklyReportActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+
+        <activity android:name=".MainActivity">
+
+        </activity>
+
+        <activity android:name=".MyPageActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+
+        <activity android:name=".AllWeeklyReportActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+
+        <activity android:name=".AddDiaryActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+
+        <activity android:name=".MindActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+    </application>
+
+</manifest>

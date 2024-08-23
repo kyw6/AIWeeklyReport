@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".MyPageActivity">
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="361dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/rounded_all_diary_background"
+        />
+    <TextView
+        android:id="@+id/textView_start_day"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="12日"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="@+id/frameLayout"
+        app:layout_constraintEnd_toStartOf="@+id/textView_end"
+        app:layout_constraintBottom_toTopOf="@+id/textView_start_year_month"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout"
+        />
+    <TextView
+        android:id="@+id/textView_start_year_month"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="2024年8月"
+        android:textSize="11sp"
+        android:textColor="@color/black"
+        android:gravity="right"
+        app:layout_constraintStart_toStartOf="@+id/frameLayout"
+        app:layout_constraintEnd_toStartOf="@+id/textView_end"
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
+        app:layout_constraintTop_toBottomOf="@+id/textView_start_day"
+        />
+
+    <TextView
+        android:id="@+id/textView_end"
+        android:layout_width="243dp"
+        android:layout_height="120dp"
+        android:text="这里是日报的内容"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_marginStart="20dp"
+        android:maxLines="5"
+        android:ellipsize="end"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/frameLayout"
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.percentlayout.widget.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10sp">
+
+
+                <EditText
+                    android:id="@+id/et_node_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:gravity="top"
+                    android:inputType="textMultiLine"
+                    android:minLines="8"
+                    android:maxLines="10"
+                    android:scrollbars="vertical"
+                    android:background="@android:drawable/edit_text"
+                    >
+                </EditText>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_save_node_container"
+            android:layout_width="match_parent"
+            android:layout_height="40sp"
+            android:gravity="center"
+            android:clickable="true"
+            android:background="@drawable/ll_custom_selector"
+            >
+
+            <TextView
+                android:id="@+id/tv_save_node"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="保存"
+                android:textColor="#ff0000"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</androidx.percentlayout.widget.PercentRelativeLayout>

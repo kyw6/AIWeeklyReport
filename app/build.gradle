@@ -1,0 +1,57 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        applicationId "com.b18060412.superdiary"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86","x86_64"
+        }
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation files('libs\\calendarview-3.6.8-javadoc.jar')
+    implementation files('libs\\calendarview-3.6.8-sources.jar')
+    implementation files('libs\\calendarview-3.6.8.aar')
+    implementation files('libs\\calendarview-3.6.8.pom')
+    implementation project(path: ':library')
+    implementation 'info.hoang8f:android-segmented:1.0.6'
+    implementation 'com.yalantis:ucrop:2.2.0-native'
+
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'//retrofit
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0' // 如果你使用 Gson 进行 JSON 解析
+
+    implementation 'commons-io:commons-io:2.5'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation files('libs\\AMap3DMap_7.9.1_AMapSearch_7.9.0_AMapLocation_5.3.1_20210414.jar')
+    implementation "androidx.percentlayout:percentlayout:1.0.0"
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}

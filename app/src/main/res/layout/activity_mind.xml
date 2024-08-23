@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MindActivity">
+
+    <include
+        android:id="@+id/l_tab_bar"
+        layout="@layout/layout_tab_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2024年8月12-15日周报"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#000000"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginTop="10dp"
+            />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/rl_mind_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible">
+
+            <com.gyso.treeview.GysoTreeView
+                android:id="@+id/base_tree_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorBackground">
+            </com.gyso.treeview.GysoTreeView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="right"
+                android:layout_marginRight="24dp"
+                android:layout_marginTop="10dp"
+                >
+
+                <ImageView
+                    android:id="@+id/iv_drag_switch"
+                    android:layout_width="36sp"
+                    android:layout_height="36sp"
+                    android:padding="5sp"
+                    android:src="@drawable/drag"
+                    android:background="@drawable/iv_float_icon_selector"
+                    android:focusable="true"
+                    android:clickable="true"
+                    />
+
+                <ImageView
+                    android:id="@+id/iv_focus"
+                    android:layout_width="36sp"
+                    android:layout_height="36sp"
+                    android:layout_marginTop="1dp"
+                    android:padding="5sp"
+                    android:src="@drawable/focus"
+                    android:background="@drawable/iv_float_icon_selector"
+                    android:focusable="true"
+                    android:clickable="true"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/scale_percent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="80dp"
+                android:background="@drawable/percent_bg"
+                android:layout_gravity="bottom|center_horizontal"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:typeface="serif"
+                android:visibility="gone"
+                tools:text="100%">
+            </TextView>
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_wr_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginTop="10dp"
+            >
+
+            <TextView
+                android:id="@+id/tv_wr_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="周报总结"
+                />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>
