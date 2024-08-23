@@ -27,6 +27,7 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+// 添加日报、修改日报
 public class AddDiaryActivity extends AppCompatActivity {
 
     private ExecutorService executorService;
