@@ -14,10 +14,11 @@ public class RetrofitClient {
 
     private static Retrofit retrofit = null;
 
-    private static final Gson GSON = new GsonBuilder()
-            .setFieldNamingStrategy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-            .create();
+//    private static final Gson GSON = new GsonBuilder()
+//            .setFieldNamingStrategy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+//            .create();
 
+    private static final Gson GSON = new Gson();
     public static Retrofit getClient() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
