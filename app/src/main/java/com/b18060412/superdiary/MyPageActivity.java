@@ -22,7 +22,7 @@ public class MyPageActivity extends AppCompatActivity {
 
         backButton.setOnClickListener(v -> finish());
         lookAllWeeklyReport.setOnClickListener(v -> {
-            Intent intent = new Intent(MyPageActivity.this, AllWeeklyReportActivity.class);
+            Intent intent = new Intent(MyPageActivity.this, AllDiaryActivity.class);
             startActivity(intent);
         });
     }

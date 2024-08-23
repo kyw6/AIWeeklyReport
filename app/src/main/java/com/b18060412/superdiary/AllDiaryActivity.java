@@ -20,14 +20,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AllWeeklyReportActivity extends AppCompatActivity {
+//全部日报
+public class AllDiaryActivity extends AppCompatActivity {
     private AllDiaryAdapter adapter;
     private androidx.recyclerview.widget.RecyclerView recyclerView;
     private List<DiaryResponse> diaryList = new java.util.ArrayList<>();
     private ImageView backButton;//头部返回按钮
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_all_weekly_report);
+        setContentView(R.layout.activity_all_diary);
         recyclerView = findViewById(R.id.recyclerView);
         backButton = findViewById(R.id.IV_back_button);
 
