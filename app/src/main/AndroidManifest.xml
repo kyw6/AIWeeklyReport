@@ -75,6 +75,10 @@
         <activity android:name=".MindActivity"
             android:windowSoftInputMode="adjustPan">
         </activity>
+
+        <activity android:name=".GenerateWeeklyReportResultActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
     </application>
 
 </manifest>

@@ -3,20 +3,15 @@ package com.b18060412.superdiary;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.b18060412.superdiary.adapter.AllDiaryAdapter;
-import com.b18060412.superdiary.network.DiaryService;
 import com.b18060412.superdiary.network.RetrofitClient;
 import com.b18060412.superdiary.network.WeeklyReportService;
 import com.b18060412.superdiary.network.responses.ApiResponseNotList;
-import com.b18060412.superdiary.network.responses.DiaryResponse;
 import com.b18060412.superdiary.network.responses.WeekReportResponse;
 import com.b18060412.superdiary.util.MyDateStringUtil;
 import com.haibin.calendarview.Calendar;
@@ -105,21 +100,22 @@ public class GenerateWeeklyReportActivity extends AppCompatActivity {
             }
         });
     }
+
     private void initGenerateWeeklyReport() {
         buttonGene.setOnClickListener(v -> {
             // 获取选中的日期范围
-            if (selectedCalendars == null || selectedCalendars.isEmpty()){
+            if (selectedCalendars == null || selectedCalendars.isEmpty()) {
                 Toast.makeText(this, "请先选择一段时间", Toast.LENGTH_SHORT).show();
-            }else {
+            } else {
                 // 获取头部元素
-                String firstDay = selectedCalendars.get(0).getDay()+"";
-                String firstDayMonth = selectedCalendars.get(0).getMonth()+"";
-                String firstDayYear = selectedCalendars.get(0).getYear()+"";
+                String firstDay = selectedCalendars.get(0).getDay() + "";
+                String firstDayMonth = selectedCalendars.get(0).getMonth() + "";
+                String firstDayYear = selectedCalendars.get(0).getYear() + "";
 
                 // 获取尾部元素
-                String lastDay = selectedCalendars.get(selectedCalendars.size() - 1).getDay()+"";
-                String lastDayMonth = selectedCalendars.get(selectedCalendars.size() - 1).getMonth()+"";
-                String lastDayYear = selectedCalendars.get(selectedCalendars.size() - 1).getYear()+"";
+                String lastDay = selectedCalendars.get(selectedCalendars.size() - 1).getDay() + "";
+                String lastDayMonth = selectedCalendars.get(selectedCalendars.size() - 1).getMonth() + "";
+                String lastDayYear = selectedCalendars.get(selectedCalendars.size() - 1).getYear() + "";
 
                 //发起网络请求
                 Toast.makeText(this, "开始生成周报", Toast.LENGTH_SHORT).show();
@@ -127,7 +123,11 @@ public class GenerateWeeklyReportActivity extends AppCompatActivity {
                 String start_time_str = MyDateStringUtil.formatDateToTransfer(firstDay, firstDayMonth, firstDayYear);
                 String end_time_str = MyDateStringUtil.formatDateToTransfer(lastDay, lastDayMonth, lastDayYear);
                 Log.d("kyw", "start_time_str" + start_time_str + "end_time_str" + end_time_str);
-                getWeeklyReportData(start_time_str, end_time_str, uuid);
+                getWeeklyReportData(start_time_str, end_time_str, uuid);//发起网络请求
+                //TODO 可以搞个loding框，然后再跳转
+                Intent intent = new Intent(GenerateWeeklyReportActivity.this, GenerateWeeklyReportResultActivity.class);
+                startActivity(intent);
+                finish();
             }
 
 
@@ -139,26 +139,26 @@ public class GenerateWeeklyReportActivity extends AppCompatActivity {
         WeeklyReportService weeklyReportService = RetrofitClient.getClient().create(WeeklyReportService.class);
         // 发起网络请求
         Call<ApiResponseNotList<WeekReportResponse>> call = weeklyReportService.getWeeklyReportData(start_time, end_time, uuid);
-        call.enqueue(new  Callback<ApiResponseNotList<WeekReportResponse>>() {
+        call.enqueue(new Callback<ApiResponseNotList<WeekReportResponse>>() {
             @Override
             public void onResponse(Call<ApiResponseNotList<WeekReportResponse>> call, Response<ApiResponseNotList<WeekReportResponse>> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     ApiResponseNotList<WeekReportResponse> apiResponse = response.body();
-                    if (apiResponse != null && apiResponse.getData() != null){
+                    if (apiResponse != null && apiResponse.getData() != null) {
 //                        List<WeekReportResponse>  weekReportResponseList = apiResponse.getData();
-                        Log.d("kyw","获取周报成功");
-                    }else {
-                        Log.d("kyw","获取周报失败111");
+                        Log.d("kyw", "获取周报成功");
+                    } else {
+                        Log.d("kyw", "获取周报失败111");
                         Toast.makeText(GenerateWeeklyReportActivity.this, "获取周报失败", Toast.LENGTH_SHORT).show();
                     }
-                }else {
+                } else {
                     Log.d("kyw", "HTTP 状态码: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponseNotList<WeekReportResponse>> call, Throwable t) {
-                Log.d("kyw","获取周报失败222");
+                Log.d("kyw", "获取周报失败222");
                 Log.d("kyw", "网络请求失败: " + t.getMessage());
                 Toast.makeText(GenerateWeeklyReportActivity.this, "网络请求失败", Toast.LENGTH_SHORT).show();
             }
@@ -166,7 +166,6 @@ public class GenerateWeeklyReportActivity extends AppCompatActivity {
 
         });
     }
-
 
 
 }
