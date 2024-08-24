@@ -105,7 +105,7 @@
         </FrameLayout>
 
         <LinearLayout
-            android:id="@+id/ll_wr_container"
+            android:id="@+id/content_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -123,6 +123,32 @@
                 />
 
         </LinearLayout>
+
+        <!-- Loading 页面 -->
+        <LinearLayout
+            android:id="@+id/loading_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@color/white"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="生成周报中..."
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+
+
 
     </FrameLayout>
 
