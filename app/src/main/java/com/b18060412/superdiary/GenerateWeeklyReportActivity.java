@@ -96,7 +96,18 @@ public class GenerateWeeklyReportActivity extends AppCompatActivity {
                 // 处理用户选择了一个日期范围
                 selectedCalendars = calendarView.getSelectCalendarRange();
                 //selectedCalendars.toString() : [20240813,20240814,20240815]
-                showText.setText(selectedCalendars.toString());
+
+                if (selectedCalendars.size() >= 1) {
+                    String start_time_year = selectedCalendars.get(0).toString().substring(0, 4);
+                    String start_time_month = selectedCalendars.get(0).toString().substring(4, 6);
+                    String start_time_day = selectedCalendars.get(0).toString().substring(6, 8);
+                    String end_time_year = selectedCalendars.get(selectedCalendars.size() - 1).toString().substring(0, 4);
+                    String end_time_month = selectedCalendars.get(selectedCalendars.size() - 1).toString().substring(4, 6);
+                    String end_time_day = selectedCalendars.get(selectedCalendars.size() - 1).toString().substring(6, 8);
+                    String result = "选择了\n" + start_time_year + "年" + start_time_month + "月" + start_time_day + "日" + "至" + end_time_year + "年" + end_time_month + "月" + end_time_day + "日";
+                    showText.setText(result);
+                }
+
 
             }
         });
@@ -137,8 +148,6 @@ public class GenerateWeeklyReportActivity extends AppCompatActivity {
 
         });
     }
-
-
 
 
 }
