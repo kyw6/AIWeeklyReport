@@ -27,6 +27,7 @@ import retrofit2.Response;
 
 //生成周报
 public class GenerateWeeklyReportActivity extends AppCompatActivity {
+    private static final String TAG = "kyw_GWActivity";
     private TextView tvYearMonth;
     private CalendarView calendarView;//日期
     private TextView showText;
@@ -46,7 +47,7 @@ public class GenerateWeeklyReportActivity extends AppCompatActivity {
         initTopText();//初始化顶部文字显示
         initSelectedDate();//初始化日期选择
         initGenerateWeeklyReport();//初始化生成周报按钮
-        Log.d("kyw", "111 map.toString()" + map.toString());
+        Log.d(TAG, "111 map.toString()" + map.toString());
     }
 
     //初始化顶部文字显示
@@ -76,17 +77,17 @@ public class GenerateWeeklyReportActivity extends AppCompatActivity {
             @Override
             public void onCalendarSelectOutOfRange(Calendar calendar) {
                 // 用户选择了一个超出可选范围的日期
-                Log.d("kyw", "超出");
+                Log.d(TAG, "超出");
             }
 
             @Override
             public void onSelectOutOfRange(Calendar calendar, boolean isClick) {
                 // 处理超出范围的日期选择，可能要禁用一些选择或提示用户
                 if (isClick) {
-                    Log.d("kyw", "超出");
+                    Log.d(TAG, "超出");
                 } else {
                     // 处理非点击事件的超出范围逻辑
-                    Log.d("kyw", "没超出");
+                    Log.d(TAG, "没超出");
                 }
             }
 
@@ -117,15 +118,18 @@ public class GenerateWeeklyReportActivity extends AppCompatActivity {
                 String lastDayMonth = selectedCalendars.get(selectedCalendars.size() - 1).getMonth() + "";
                 String lastDayYear = selectedCalendars.get(selectedCalendars.size() - 1).getYear() + "";
 
-                //发起网络请求
+                //传输选中的日期 给下个Activity
                 Toast.makeText(this, "开始生成周报", Toast.LENGTH_SHORT).show();
                 String uuid = "123456";
                 String start_time_str = MyDateStringUtil.formatDateToTransfer(firstDay, firstDayMonth, firstDayYear);
                 String end_time_str = MyDateStringUtil.formatDateToTransfer(lastDay, lastDayMonth, lastDayYear);
-                Log.d("kyw", "start_time_str" + start_time_str + "end_time_str" + end_time_str);
-                getWeeklyReportData(start_time_str, end_time_str, uuid);//发起网络请求
-                //TODO 可以搞个loding框，然后再跳转
+                Log.d(TAG, "start_time_str" + start_time_str + "end_time_str" + end_time_str);
+
                 Intent intent = new Intent(GenerateWeeklyReportActivity.this, GenerateWeeklyReportResultActivity.class);
+                intent.putExtra("start_time_str", start_time_str);
+                intent.putExtra("end_time_str", end_time_str);
+                intent.putExtra("uuid", uuid);
+                Log.d(TAG, "intent" + intent);
                 startActivity(intent);
                 finish();
             }
@@ -134,38 +138,7 @@ public class GenerateWeeklyReportActivity extends AppCompatActivity {
         });
     }
 
-    private void getWeeklyReportData(String start_time, String end_time, String uuid) {
-        // 创建一个WeeklyReportService实例
-        WeeklyReportService weeklyReportService = RetrofitClient.getClient().create(WeeklyReportService.class);
-        // 发起网络请求
-        Call<ApiResponseNotList<WeekReportResponse>> call = weeklyReportService.getWeeklyReportData(start_time, end_time, uuid);
-        call.enqueue(new Callback<ApiResponseNotList<WeekReportResponse>>() {
-            @Override
-            public void onResponse(Call<ApiResponseNotList<WeekReportResponse>> call, Response<ApiResponseNotList<WeekReportResponse>> response) {
-                if (response.isSuccessful()) {
-                    ApiResponseNotList<WeekReportResponse> apiResponse = response.body();
-                    if (apiResponse != null && apiResponse.getData() != null) {
-//                        List<WeekReportResponse>  weekReportResponseList = apiResponse.getData();
-                        Log.d("kyw", "获取周报成功");
-                    } else {
-                        Log.d("kyw", "获取周报失败111");
-                        Toast.makeText(GenerateWeeklyReportActivity.this, "获取周报失败", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Log.d("kyw", "HTTP 状态码: " + response.code());
-                }
-            }
 
-            @Override
-            public void onFailure(Call<ApiResponseNotList<WeekReportResponse>> call, Throwable t) {
-                Log.d("kyw", "获取周报失败222");
-                Log.d("kyw", "网络请求失败: " + t.getMessage());
-                Toast.makeText(GenerateWeeklyReportActivity.this, "网络请求失败", Toast.LENGTH_SHORT).show();
-            }
-
-
-        });
-    }
 
 
 }
