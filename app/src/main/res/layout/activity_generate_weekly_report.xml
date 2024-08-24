@@ -51,6 +51,7 @@
         app:week_text_size="20sp"
         app:day_text_size="14sp"
         app:select_mode="range_mode"
+        app:max_select_range="7"
         app:month_view="com.b18060412.superdiary.calendar.GeneReportMonthView"/>
 
     <FrameLayout

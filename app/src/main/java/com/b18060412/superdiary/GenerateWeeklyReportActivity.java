@@ -77,17 +77,17 @@ public class GenerateWeeklyReportActivity extends AppCompatActivity {
             @Override
             public void onCalendarSelectOutOfRange(Calendar calendar) {
                 // 用户选择了一个超出可选范围的日期
-                Log.d(TAG, "超出");
+                Toast.makeText(GenerateWeeklyReportActivity.this, "请选择最多7天", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onSelectOutOfRange(Calendar calendar, boolean isClick) {
                 // 处理超出范围的日期选择，可能要禁用一些选择或提示用户
                 if (isClick) {
-                    Log.d(TAG, "超出");
+                    Log.d(TAG, "点击了超出范围的日期：" + calendar);
                 } else {
                     // 处理非点击事件的超出范围逻辑
-                    Log.d(TAG, "没超出");
+                    Toast.makeText(GenerateWeeklyReportActivity.this, "请选择最多7天", Toast.LENGTH_SHORT).show();
                 }
             }
 
