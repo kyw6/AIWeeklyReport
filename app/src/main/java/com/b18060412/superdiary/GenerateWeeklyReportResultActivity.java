@@ -113,7 +113,7 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
                     if (apiResponse != null && apiResponse.getData() != null) {
                         WeekReportResponse weekReportResponse = apiResponse.getData();
                         et_content.setText(weekReportResponse.getContent());
-                        Log.d(TAG, "获取周报成功");
+                        Log.d(TAG, "获取周报成功-周报id" + weekReportResponse.getWrID());
                     } else {
                         Log.d(TAG, "获取周报失败111");
                         Toast.makeText(GenerateWeeklyReportResultActivity.this, "获取周报失败", Toast.LENGTH_SHORT).show();

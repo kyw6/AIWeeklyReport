@@ -15,8 +15,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.b18060412.superdiary.network.DiaryService;
 import com.b18060412.superdiary.network.RetrofitClient;
+import com.b18060412.superdiary.network.WeeklyReportService;
 import com.b18060412.superdiary.network.responses.ApiResponse;
+import com.b18060412.superdiary.network.responses.ApiResponseNotList;
 import com.b18060412.superdiary.network.responses.DiaryResponse;
+import com.b18060412.superdiary.network.responses.WeekReportResponse;
 import com.b18060412.superdiary.util.MyDateStringUtil;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
@@ -42,7 +45,6 @@ public class MainActivityNew extends AppCompatActivity {
     private List<DiaryResponse> diaryList = new ArrayList<>();//存放已经填写的日记
     private TextView tvYearMonth;
     private CalendarView calendarView;//日历
-    private TextView textViewReport;//周报展示区域
     private ImageView generateWeeklyReportButton;//生成周报按钮
     private ImageView headRightButton;//头部右侧按钮
     private ImageView startAddDiaryButton;//添加日记按钮
@@ -51,6 +53,10 @@ public class MainActivityNew extends AppCompatActivity {
     private TextView textViewDiaryContent;
     private TextView textViewDiaryDate;
     private TextView textViewDiaryYearMonth;
+    //周报模块
+    private FrameLayout weeklyReportFrameLayout;
+    private TextView textViewWeeklyReportContent;
+    private TextView textViewWeeklyReportTittle;
 
     private String selectDay = "";
     private String selectMonth = "";
@@ -62,7 +68,6 @@ public class MainActivityNew extends AppCompatActivity {
         setContentView(R.layout.activity_main_new);
         tvYearMonth = findViewById(R.id.tv_year_month);
         calendarView = findViewById(R.id.CV_calendar);
-        textViewReport = findViewById(R.id.textView_weekly_report_right);
         generateWeeklyReportButton = findViewById(R.id.BTN_gene);
         headRightButton = findViewById(R.id.IV_head_right);
         startAddDiaryButton = findViewById(R.id.BTN_add);
@@ -70,7 +75,10 @@ public class MainActivityNew extends AppCompatActivity {
         textViewDiaryDate = findViewById(R.id.textView_start_day);
         textViewDiaryYearMonth = findViewById(R.id.textView_start_year_month);
         diaryFrameLayout = findViewById(R.id.frameLayout_diary);
-
+        //周报模块
+        weeklyReportFrameLayout = findViewById(R.id.frameLayout_weekly_report);//周报模块
+        textViewWeeklyReportContent = findViewById(R.id.textView_weekly_report_right);//周报内容
+        textViewWeeklyReportTittle = findViewById(R.id.textView_weekly_report_left);//周报标题
 
         initTopText();//初始化顶部文字显示
         initReportText();//初始化周报展示区域
@@ -183,7 +191,6 @@ public class MainActivityNew extends AppCompatActivity {
 
                 SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.getDefault());
                 SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-
                 // 在 diaryList 中查找对应的日记
                 DiaryResponse diaryResponse = null;
 
@@ -220,6 +227,8 @@ public class MainActivityNew extends AppCompatActivity {
                     // 如果没有找到对应的日记，则隐藏日报模块
                     hideDiaryModule();
                 }
+                // 用户点击日历某一天之后，查询那一天所在周的周报，没有的话就不展示周报模块，有就展示周报模块
+                getWeeklyReport(MyDateStringUtil.formatDateToTransfer(selectDay, selectMonth, selectYear));
             }
         });
 
@@ -312,6 +321,18 @@ public class MainActivityNew extends AppCompatActivity {
         textViewDiaryDate.setVisibility(View.GONE);
         textViewDiaryYearMonth.setVisibility(View.GONE);
     }
+    //显示周报模块
+    private void showWeekReportModule() {
+        weeklyReportFrameLayout.setVisibility(View.VISIBLE);
+        textViewWeeklyReportContent.setVisibility(View.VISIBLE);
+        textViewWeeklyReportTittle.setVisibility(View.VISIBLE);
+    }
+    //隐藏周报模块
+    private void hideWeekReportModule() {
+        weeklyReportFrameLayout.setVisibility(View.GONE);
+        textViewWeeklyReportContent.setVisibility(View.GONE);
+        textViewWeeklyReportTittle.setVisibility(View.GONE);
+    }
 
 
     //显示用户添加成功后，返回的日记模块，遍历日记list，找到用户添加的日记，显示到首页
@@ -337,6 +358,36 @@ public class MainActivityNew extends AppCompatActivity {
             }
         }
         hideDiaryModule();
+    }
+
+    //获取选中的周报数据
+    private void getWeeklyReport(String day){
+        WeeklyReportService weeklyReportService = RetrofitClient.getClient().create(WeeklyReportService.class);
+        String uuid = "123456";
+        Call<ApiResponseNotList<WeekReportResponse>> call = weeklyReportService.getWeeklyReportByDay(day,uuid);
+        call.enqueue(new Callback<ApiResponseNotList<WeekReportResponse>>() {
+            @Override
+            public void onResponse(Call<ApiResponseNotList<WeekReportResponse>> call, Response<ApiResponseNotList<WeekReportResponse>> response) {
+                if (response.isSuccessful()) {
+                    ApiResponseNotList<WeekReportResponse> apiResponse = response.body();
+                    if (apiResponse != null && apiResponse.getData() != null) {
+                        //如果获取到数据，则显示数据，否则默认隐藏周报模块
+                        showWeekReportModule();
+                        textViewWeeklyReportContent.setText(apiResponse.getData().getContent());
+                        textViewWeeklyReportTittle.setText("本周周报");
+                    } else {
+                        NetworkConnectionError();
+                        hideWeekReportModule();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponseNotList<WeekReportResponse>> call, Throwable t) {
+                NetworkConnectionError();
+                hideWeekReportModule();
+            }
+        });
     }
 
 }
