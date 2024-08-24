@@ -57,6 +57,9 @@ public class MainActivityNew extends AppCompatActivity {
     private FrameLayout weeklyReportFrameLayout;
     private TextView textViewWeeklyReportContent;
     private TextView textViewWeeklyReportTittle;
+    //logo模块
+    private ImageView logoImageView;
+    private TextView textViewLogo;
 
     private String selectDay = "";
     private String selectMonth = "";
@@ -79,9 +82,12 @@ public class MainActivityNew extends AppCompatActivity {
         weeklyReportFrameLayout = findViewById(R.id.frameLayout_weekly_report);//周报模块
         textViewWeeklyReportContent = findViewById(R.id.textView_weekly_report_right);//周报内容
         textViewWeeklyReportTittle = findViewById(R.id.textView_weekly_report_left);//周报标题
+        //logo模块
+        logoImageView = findViewById(R.id.home_logo);
+        textViewLogo = findViewById(R.id.home_logo_text);
 
         initTopText();//初始化顶部文字显示
-        initReportText();//初始化周报展示区域
+        initReportText();//初始化日历点击事件
         // 设置生成周报按钮点击事件
         generateWeeklyReportButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,9 +173,10 @@ public class MainActivityNew extends AppCompatActivity {
         });
     }
 
-    //初始化周报展示区域
+    //初始化日历点击事件
     private void initReportText() {
         calendarView.setOnCalendarSelectListener(new CalendarView.OnCalendarSelectListener() {
+
             @Override
             public void onCalendarOutOfRange(Calendar calendar) {
                 // 当选中的日期超出范围时回调
@@ -178,6 +185,7 @@ public class MainActivityNew extends AppCompatActivity {
             @Override
             public void onCalendarSelect(Calendar calendar, boolean b) {
                 // 当日期被选中时回调
+                showLogoModule();//显示logo模块
                 selectDay = String.valueOf(calendar.getDay());
                 selectMonth = String.valueOf(calendar.getMonth());
                 selectYear = String.valueOf(calendar.getYear());
@@ -312,6 +320,7 @@ public class MainActivityNew extends AppCompatActivity {
         textViewDiaryContent.setVisibility(View.VISIBLE);
         textViewDiaryDate.setVisibility(View.VISIBLE);
         textViewDiaryYearMonth.setVisibility(View.VISIBLE);
+        hideLogoModule();//隐藏logo模块
     }
 
     //隐藏日记模块
@@ -326,12 +335,25 @@ public class MainActivityNew extends AppCompatActivity {
         weeklyReportFrameLayout.setVisibility(View.VISIBLE);
         textViewWeeklyReportContent.setVisibility(View.VISIBLE);
         textViewWeeklyReportTittle.setVisibility(View.VISIBLE);
+        hideLogoModule();//隐藏logo模块
     }
     //隐藏周报模块
     private void hideWeekReportModule() {
         weeklyReportFrameLayout.setVisibility(View.GONE);
         textViewWeeklyReportContent.setVisibility(View.GONE);
         textViewWeeklyReportTittle.setVisibility(View.GONE);
+    }
+
+    //显示logo模块
+    private void showLogoModule() {
+        logoImageView.setVisibility(View.VISIBLE);
+        textViewLogo.setVisibility(View.VISIBLE);
+    }
+
+    //隐藏logo模块
+    private void hideLogoModule() {
+        logoImageView.setVisibility(View.GONE);
+        textViewLogo.setVisibility(View.GONE);
     }
 
 

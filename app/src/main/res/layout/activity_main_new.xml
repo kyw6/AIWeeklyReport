@@ -66,6 +66,31 @@
         android:visibility="visible"
         />
 
+    <ImageView
+        android:id="@+id/home_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/home_logo"
+        android:layout_marginTop="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CV_calendar"
+        android:visibility="visible"
+        />
+
+    <TextView
+        android:id="@+id/home_logo_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="今天你记日报了吗？"
+        android:textSize="20sp"
+        android:textColor="@color/home_logo_text"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_logo"
+        />
+
     <!--    日报模块-->
     <FrameLayout
         android:id="@+id/frameLayout_diary"

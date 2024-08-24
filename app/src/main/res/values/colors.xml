@@ -28,4 +28,6 @@
     <color name="LineColor2">#F06292</color>
     <color name="RedColor2">#F1286C</color>
     <color name="percentColor">#80055287</color>
+
+    <color name="home_logo_text">#E2E2E2</color>
 </resources>
