@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,8 +18,6 @@ import com.b18060412.superdiary.network.WeeklyReportService;
 import com.b18060412.superdiary.network.responses.ApiResponseNotList;
 import com.b18060412.superdiary.network.responses.WeekReportResponse;
 
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,12 +25,13 @@ import retrofit2.Response;
 //生成周报结果页面
 public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
     private static final String TAG = "kyw_GWResultActivity";
+    private TextView tvHeadShowTime;//顶部时间文字
     private ImageView jump_to_mind;
     private LinearLayout loadingLayout;
     private EditText et_content;
-    private String start_time_str = null;
-    private String end_time_str = null;
-    private String uuid = null;
+    private String startTimeStr = null;//用户选择的起始时间，格式为2024-08-23
+    private String endTimeStr = null;//用户选择的结束时间
+    private String uuid = null;//用户id
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,26 +45,28 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
 
         loadingLayout = findViewById(R.id.loading_layout);
         et_content = findViewById(R.id.et_content);
+        tvHeadShowTime = findViewById(R.id.tv_head_show_time);
 
         Intent dataIntent = getIntent();
-        start_time_str = dataIntent.getStringExtra("start_time_str");
-        end_time_str = dataIntent.getStringExtra("end_time_str");
+        startTimeStr = dataIntent.getStringExtra("start_time_str");
+        endTimeStr = dataIntent.getStringExtra("end_time_str");
         uuid = dataIntent.getStringExtra("uuid");
 
         // 网络请求，获取周报
-        Log.d(TAG, "start_time_str: " + start_time_str);
-        if (start_time_str == null || end_time_str == null || uuid == null) {
+        if (startTimeStr == null || endTimeStr == null || uuid == null) {
             Log.d(TAG, "start_time_str end_time_str uuid 为空");
             finish();
         } else {
-            loadData();
+            loadData();//请求周报数据
+            initTvHeadShowTime();//顶部文字初始化
         }
+
 
     }
 
 
     private void loadData() {
-        getWeeklyReportData(start_time_str, end_time_str, uuid);//发起网络请求
+        getWeeklyReportData(startTimeStr, endTimeStr, uuid);//发起网络请求
 
         // 显示 Loading 页面
         showLoading();
@@ -132,4 +134,34 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
         });
     }
 
+    private void initTvHeadShowTime() {
+        String result;
+        // 分割开始日期和结束日期
+        String[] startParts = startTimeStr.split("-");
+        String[] endParts = endTimeStr.split("-");
+
+        // 获取月、日
+        String startMonth = startParts[1];
+        String startDay = startParts[2];
+        String endMonth = endParts[1];
+        String endDay = endParts[2];
+
+        // 去除前导零
+        startMonth = removeLeadingZero(startMonth);
+        endMonth = removeLeadingZero(endMonth);
+        startDay = removeLeadingZero(startDay);
+        endDay = removeLeadingZero(endDay);
+
+        // 生成最终的格式化字符串
+        result = String.format("%s月%s日 - %s月%s日周报", startMonth, startDay, endMonth, endDay);
+        tvHeadShowTime.setText(result);
+    }
+
+    // 辅助方法去除前导零
+    private static String removeLeadingZero(String str) {
+        if (str.startsWith("0")) {
+            return str.substring(1);
+        }
+        return str;
+    }
 }
