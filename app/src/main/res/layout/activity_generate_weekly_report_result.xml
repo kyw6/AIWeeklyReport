@@ -44,7 +44,16 @@
         android:src="@drawable/ic_more"
         android:layout_gravity="center"
         />
-
+    <ImageView
+        android:id="@+id/ic_nike"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="20dp"
+        android:src="@drawable/ic_nike"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        />
 
 </LinearLayout>
 

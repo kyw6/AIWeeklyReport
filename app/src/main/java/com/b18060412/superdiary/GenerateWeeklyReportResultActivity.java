@@ -39,6 +39,7 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
     private ImageView backButton;
     private ImageView moreButton;//更多按钮
     private ImageView jump_to_mind;//思维导图
+    private ImageView doneButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +50,7 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
         tvHeadShowTime = findViewById(R.id.tv_head_show_time);
         backButton = findViewById(R.id.ic_back);
         moreButton = findViewById(R.id.ic_more);
+        doneButton = findViewById(R.id.ic_nike);
 
         Intent dataIntent = getIntent();
         startTimeStr = dataIntent.getStringExtra("start_time_str");
@@ -77,6 +79,14 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showPopupMenu(view);
+            }
+        });
+        doneButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(GenerateWeeklyReportResultActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+                moreButton.setVisibility(View.VISIBLE);
+                doneButton.setVisibility(View.GONE);
             }
         });
     }
@@ -204,6 +214,8 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
                         et_content.setFocusableInTouchMode(true);
                         et_content.setClickable(true);
                         et_content.setEnabled(true); // 确保 EditText 可以编辑并响应用户输入
+                        moreButton.setVisibility(View.GONE);
+                        doneButton.setVisibility(View.VISIBLE);
                         return true;
                     case R.id.action_delete:
                         Toast.makeText(GenerateWeeklyReportResultActivity.this, "删除", Toast.LENGTH_SHORT).show();
