@@ -48,7 +48,6 @@ public class TreeViewEditor {
     }
 
     public View anchorNodeOnMidViewport(NodeModel<?> targetNode){
-        //TODO move targetNode at center  of viewport
         return null;
     }
 

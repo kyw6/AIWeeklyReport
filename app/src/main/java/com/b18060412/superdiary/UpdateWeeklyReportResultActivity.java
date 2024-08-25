@@ -27,6 +27,8 @@ public class UpdateWeeklyReportResultActivity  extends AppCompatActivity {
     private String weeklyReportEndDate;
     private String weeklyReportContent;
     private String weeklyReportMind;
+
+    private ImageView doneButton;
     //页面
     private TextView tittle;
     private EditText content;
@@ -73,7 +75,7 @@ public class UpdateWeeklyReportResultActivity  extends AppCompatActivity {
         tittle = findViewById(R.id.tv_head_show_time);
         content = findViewById(R.id.et_content);
         jump_to_mind = findViewById(R.id.jump_mind);
-
+        doneButton = findViewById(R.id.ic_nike);
         et_content = findViewById(R.id.et_content);
         backButton = findViewById(R.id.ic_back);
         moreButton = findViewById(R.id.ic_more);
@@ -94,6 +96,15 @@ public class UpdateWeeklyReportResultActivity  extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showPopupMenu(view);
+            }
+        });
+        doneButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(UpdateWeeklyReportResultActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+                moreButton.setVisibility(View.VISIBLE);
+                doneButton.setVisibility(View.GONE);
+                //TODO 保存逻辑
             }
         });
     }
@@ -120,6 +131,8 @@ public class UpdateWeeklyReportResultActivity  extends AppCompatActivity {
                         et_content.setFocusableInTouchMode(true);
                         et_content.setClickable(true);
                         et_content.setEnabled(true); // 确保 EditText 可以编辑并响应用户输入
+                        moreButton.setVisibility(View.GONE);
+                        doneButton.setVisibility(View.VISIBLE);//显示保存按钮
                         return true;
                     case R.id.action_delete:
                         Toast.makeText(UpdateWeeklyReportResultActivity.this, "删除", Toast.LENGTH_SHORT).show();

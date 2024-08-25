@@ -24,7 +24,7 @@ public interface WeeklyReportService {
 
     );
 
-    //查看某一天的周报 TODO 修改路径
+    //查看某一天的周报
     @GET("record/week/{uuid}")
     Call<ApiResponseNotList<WeekReportResponse>> getWeeklyReportByDay(
             @Path("uuid") String uuid,

@@ -191,7 +191,7 @@ public abstract class TreeLayoutManager {
 
                 //remove views
                 if(!animateRemoveNodes(treeViewContainer, finalLocation)){
-                    //TODO remove nodes directly
+
                     TreeViewLog.e(TAG,"Has remove nodes directly!");
                 }
 
