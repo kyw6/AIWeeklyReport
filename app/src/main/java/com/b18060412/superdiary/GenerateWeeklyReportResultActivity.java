@@ -26,13 +26,15 @@ import retrofit2.Response;
 public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
     private static final String TAG = "kyw_GWResultActivity";
     private TextView tvHeadShowTime;//顶部时间文字
-    private ImageView jump_to_mind;
     private LinearLayout loadingLayout;
     private EditText et_content;
     private String startTimeStr = null;//用户选择的起始时间，格式为2024-08-23
     private String endTimeStr = null;//用户选择的结束时间
     private String uuid = null;//用户id
 
+    private ImageView backButton;
+    private ImageView moreButton;
+    private ImageView jump_to_mind;//思维导图
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +43,8 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
         loadingLayout = findViewById(R.id.loading_layout);
         et_content = findViewById(R.id.et_content);
         tvHeadShowTime = findViewById(R.id.tv_head_show_time);
+        backButton = findViewById(R.id.ic_back);
+        moreButton = findViewById(R.id.ic_more);
 
         Intent dataIntent = getIntent();
         startTimeStr = dataIntent.getStringExtra("start_time_str");
@@ -64,7 +68,7 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
             loadData();//请求周报数据
             initTvHeadShowTime();//顶部文字初始化
         }
-
+        backButton.setOnClickListener(v -> finish());
 
     }
 
