@@ -30,4 +30,6 @@
     <color name="percentColor">#80055287</color>
 
     <color name="home_logo_text">#E2E2E2</color>
+    <color name="home_logo_bg">#10000000</color>"
+    <color name="home_logo_bg2">#FFB21D</color>"
 </resources>

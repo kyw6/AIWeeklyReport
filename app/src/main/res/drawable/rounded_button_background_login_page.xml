@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 按钮不可点击时的背景 -->
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <solid android:color="#09000000" /> <!-- 灰色 -->
+            <corners android:radius="20dp" /> <!-- 圆角 -->
+        </shape>
+    </item>
+    <!-- 按钮可点击时的背景 -->
+    <item android:state_enabled="true">
+        <shape android:shape="rectangle">
+            <gradient android:angle="90" android:endColor="#FFB21D" android:startColor="#FFCD4F" /> <!-- 你原来的颜色 -->
+            <corners android:radius="20dp" /> <!-- 圆角 -->
+        </shape>
+    </item>
+</selector>
