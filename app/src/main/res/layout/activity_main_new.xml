@@ -65,7 +65,7 @@
         android:background="@color/color_bg_home"
         android:visibility="visible"
         />
-
+<!--当周报模块和日报模块 有一个可见的时候，不模块就不可见 反之可见-->
     <ImageView
         android:id="@+id/home_logo"
         android:layout_width="wrap_content"
@@ -77,6 +77,7 @@
         app:layout_constraintTop_toBottomOf="@+id/CV_calendar"
         android:visibility="visible"
         />
+    <!--当周报模块和日报模块 有一个可见的时候，不模块就不可见 反之可见-->
 
     <TextView
         android:id="@+id/home_logo_text"
@@ -103,6 +104,7 @@
         app:layout_constraintTop_toBottomOf="@+id/frameLayout_weekly_report"
         android:background="@drawable/rounded_all_diary_background"
         />
+    <!--    日报模块的文字-->
     <TextView
         android:id="@+id/textView_start_day"
         android:layout_width="80dp"
@@ -118,6 +120,7 @@
         app:layout_constraintBottom_toTopOf="@+id/textView_start_year_month"
         app:layout_constraintTop_toTopOf="@+id/frameLayout_diary"
         />
+    <!--    日报模块的文字-->
     <TextView
         android:id="@+id/textView_start_year_month"
         android:layout_width="80dp"
@@ -132,7 +135,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/frameLayout_diary"
         app:layout_constraintTop_toBottomOf="@+id/textView_start_day"
         />
-
+    <!--    日报模块的文字-->
     <TextView
         android:id="@+id/textView_end"
         android:layout_width="243dp"
@@ -167,10 +170,10 @@
         android:background="@drawable/rounded_all_diary_background"
         android:visibility="gone"
         />
-
+    <!--    周报模块的文字-->
     <TextView
         android:id="@+id/textView_weekly_report_left"
-        android:layout_width="80dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="本周周报"
         android:textSize="15sp"
@@ -182,7 +185,7 @@
         app:layout_constraintTop_toTopOf="@+id/frameLayout_weekly_report"
         android:visibility="gone"
         />
-
+    <!--    周报模块的 文字-->
     <TextView
         android:id="@+id/textView_weekly_report_right"
         android:layout_width="243dp"
