@@ -31,7 +31,6 @@ public class UpdateWeeklyReportResultActivity  extends AppCompatActivity {
     private ImageView doneButton;
     //页面
     private TextView tittle;
-    private EditText content;
     private ImageView jump_to_mind;
 
     private EditText et_content;
@@ -73,7 +72,6 @@ public class UpdateWeeklyReportResultActivity  extends AppCompatActivity {
         String uuid = userUuid;
         //页面
         tittle = findViewById(R.id.tv_head_show_time);
-        content = findViewById(R.id.et_content);
         jump_to_mind = findViewById(R.id.jump_mind);
         doneButton = findViewById(R.id.ic_nike);
         et_content = findViewById(R.id.et_content);
@@ -81,7 +79,7 @@ public class UpdateWeeklyReportResultActivity  extends AppCompatActivity {
         moreButton = findViewById(R.id.ic_more);
         //赋值
         tittle.setText(weeklyReportTittle);
-        content.setText(weeklyReportContent);
+        et_content.setText(weeklyReportContent);
 
         //传给思维导图页面
         jump_to_mind.setOnClickListener(v -> {
