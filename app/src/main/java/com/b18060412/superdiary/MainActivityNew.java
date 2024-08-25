@@ -65,9 +65,14 @@ public class MainActivityNew extends AppCompatActivity {
     private String selectDay = "";
     private String selectMonth = "";
     private String selectYear = "";
-
+    //日报模块是否显示 周报模块是否显示
     private boolean showDiary = false;
     private boolean showWeeklyReport = false;
+    //存储获取到的周报 以及周报标题 以及周报开始结束日期
+    private WeekReportResponse weeklyReportResponse;
+    String weeklyReportTittle;
+    String weeklyReportStartDate;
+    String weeklyReportEndDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +154,21 @@ public class MainActivityNew extends AppCompatActivity {
                         break;
                     }
                 }
+                startActivity(intent);
+            }
+        });
+
+        // 设置周报模块点击事件：携带周报内容跳转到日记编辑页面
+        weeklyReportFrameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "点击了周报模块");
+                Intent intent = new Intent(MainActivityNew.this, UpdateWeeklyReportResultActivity.class);
+                intent.putExtra("weeklyTittle", weeklyReportTittle);
+                intent.putExtra("weeklyReportStartDate", weeklyReportStartDate);
+                intent.putExtra("weeklyReportEndDate", weeklyReportEndDate);
+                intent.putExtra("weeklyReportContent", weeklyReportResponse.getContent());
+                intent.putExtra("weeklyReportMind", weeklyReportResponse.getMind());
                 startActivity(intent);
             }
         });
@@ -243,6 +263,7 @@ public class MainActivityNew extends AppCompatActivity {
                     showDiary = false;
                     updateVisibility(showDiary, showWeeklyReport);
                 }
+                //获取周报
                 // 用户点击日历某一天之后，查询那一天所在周的周报，没有的话就不展示周报模块，有就展示周报模块
                 try {
                     getWeeklyReport(MyDateStringUtil.formatDateToTransfer(selectDay, selectMonth, selectYear));
@@ -405,6 +426,9 @@ public class MainActivityNew extends AppCompatActivity {
         String uuid = "123456";
         String startTime = MyDateStringUtil.getWeekStartAndEnd(day)[0];
         String endTime = MyDateStringUtil.getWeekStartAndEnd(day)[1];
+        Log.d(TAG, "查询周报 -- 开始时间：" + startTime + "结束时间：" + endTime);
+        weeklyReportStartDate = startTime;//获取周报的开始时间 保存 用于传输给下个页面
+        weeklyReportEndDate = endTime;//获取周报的结束时间 保存 用于传输给下个页面
         Call<ApiResponseNotList<WeekReportResponse>> call = weeklyReportService.getWeeklyReportByDay(uuid, startTime, endTime);
         call.enqueue(new Callback<ApiResponseNotList<WeekReportResponse>>() {
             @Override
@@ -412,13 +436,14 @@ public class MainActivityNew extends AppCompatActivity {
                 if (response.isSuccessful() && !TextUtils.isEmpty(response.body().getData().getContent())) {
                     Log.d(TAG, "获取周报成功111");
                     ApiResponseNotList<WeekReportResponse> apiResponse = response.body();
+                    weeklyReportResponse = apiResponse.getData();
                     if (apiResponse != null && apiResponse.getData() != null) {
                         //如果获取到数据，则显示数据，否则默认隐藏周报模块
                         showWeeklyReport = true;
                         updateVisibility(showDiary, showWeeklyReport);
                         textViewWeeklyReportContent.setText(apiResponse.getData().getContent());
-
-                        textViewWeeklyReportTittle.setText(MyDateStringUtil.formatDateToMonthDayChinese(startTime) + "至" + MyDateStringUtil.formatDateToMonthDayChinese(endTime) + "周报");
+                        weeklyReportTittle = MyDateStringUtil.formatDateToMonthDayChinese(startTime) + "至" + MyDateStringUtil.formatDateToMonthDayChinese(endTime) + "周报";
+                        textViewWeeklyReportTittle.setText(weeklyReportTittle);
                     }
                 } else {
                     Log.d(TAG, "获取周报失败111");
