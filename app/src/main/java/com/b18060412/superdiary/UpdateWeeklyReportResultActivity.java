@@ -2,6 +2,7 @@ package com.b18060412.superdiary;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -79,6 +80,9 @@ public class UpdateWeeklyReportResultActivity  extends AppCompatActivity {
         moreButton = findViewById(R.id.ic_more);
         //赋值
         tittle.setText(weeklyReportTittle);
+        //换行相关注释
+//        String text = "这是第一段文字。<br><br>这是第二段文字。<br><br>这是第三段文字。";
+//        et_content.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY));
         et_content.setText(weeklyReportContent);
 
         //传给思维导图页面
