@@ -84,6 +84,21 @@
         />
 
     <TextView
+        android:id="@+id/tv_okr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OKR"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:layout_marginStart="18dp"
+        android:padding="20dp"
+        android:drawableLeft="@drawable/ic_okr"
+        android:drawablePadding="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TV_all_diary"
+        />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="设置"
@@ -94,7 +109,7 @@
         android:drawableLeft="@drawable/ic_setting"
         android:drawablePadding="21dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TV_all_diary"
+        app:layout_constraintTop_toBottomOf="@+id/tv_okr"
         />
 
     <TextView
