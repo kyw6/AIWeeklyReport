@@ -3,11 +3,15 @@ package com.b18060412.superdiary;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.InputType;
 import android.util.Log;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,13 +31,13 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
     private static final String TAG = "kyw_GWResultActivity";
     private TextView tvHeadShowTime;//顶部时间文字
     private LinearLayout loadingLayout;
-    private EditText et_content;
     private String startTimeStr = null;//用户选择的起始时间，格式为2024-08-23
     private String endTimeStr = null;//用户选择的结束时间
     private String uuid = null;//用户id
 
+    private EditText et_content;
     private ImageView backButton;
-    private ImageView moreButton;
+    private ImageView moreButton;//更多按钮
     private ImageView jump_to_mind;//思维导图
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +73,12 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
             initTvHeadShowTime();//顶部文字初始化
         }
         backButton.setOnClickListener(v -> finish());
-
+        moreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopupMenu(view);
+            }
+        });
     }
 
 
@@ -171,5 +180,41 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
             return str.substring(1);
         }
         return str;
+    }
+
+    // 显示弹出菜单
+    private void showPopupMenu(View view) {
+
+        // 创建 PopupMenu 对象
+        PopupMenu popupMenu = new PopupMenu(this, view);
+
+        // 加载菜单资源
+        MenuInflater inflater = popupMenu.getMenuInflater();
+        inflater.inflate(R.menu.weekly_report_popup_menu, popupMenu.getMenu());
+
+        // 设置菜单项点击事件
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_edit:
+                        Toast.makeText(GenerateWeeklyReportResultActivity.this, "进入修改模式", Toast.LENGTH_SHORT).show();
+                        // 使 EditText 可编辑
+                        et_content.setFocusable(true);
+                        et_content.setFocusableInTouchMode(true);
+                        et_content.setClickable(true);
+                        et_content.setEnabled(true); // 确保 EditText 可以编辑并响应用户输入
+                        return true;
+                    case R.id.action_delete:
+                        Toast.makeText(GenerateWeeklyReportResultActivity.this, "删除", Toast.LENGTH_SHORT).show();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+
+        // 显示菜单
+        popupMenu.show();
     }
 }
