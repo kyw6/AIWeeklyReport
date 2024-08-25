@@ -1,5 +1,7 @@
 package com.b18060412.superdiary.util;
 
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -89,18 +91,30 @@ public class MyDateStringUtil {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     public static String[] getWeekStartAndEnd(String dateStr) throws ParseException {
+        // 解析输入的日期字符串
         Date date = DATE_FORMAT.parse(dateStr);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
 
-        // 设置为周一
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        // 确定输入日期是一周中的哪一天
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+        // 计算周一的日期
+        // 如果是周日，则直接使用当前日期作为周日，并计算本周的周一
+        if (dayOfWeek == Calendar.SUNDAY) {
+            calendar.add(Calendar.DAY_OF_MONTH, -6); // 调整到周一
+        } else {
+            int daysToMonday = dayOfWeek - Calendar.MONDAY;
+            calendar.add(Calendar.DAY_OF_MONTH, -daysToMonday); // 调整到周一
+        }
         String weekStart = DATE_FORMAT.format(calendar.getTime());
 
-        // 设置为周日
-        calendar.add(Calendar.DAY_OF_WEEK, 6);
+        // 计算周日的日期
+        calendar.add(Calendar.DAY_OF_MONTH, 6); // 从周一开始加6天
         String weekEnd = DATE_FORMAT.format(calendar.getTime());
 
         return new String[]{weekStart, weekEnd};
     }
+
+
 }
