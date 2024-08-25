@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">米小报</string>
+
+    <string name="shangyiceng">Image button description</string>
+    <string name="welcome">欢迎来到米小报!</string>
+    <string name="email">请输入你的邮箱</string>
+    <string name="password">请输入密码</string>
+    <string name="zhuce">注册</string>
+    <string name="login">登录</string>
+    <string name="confirm_password">请确认密码</string>
 </resources>

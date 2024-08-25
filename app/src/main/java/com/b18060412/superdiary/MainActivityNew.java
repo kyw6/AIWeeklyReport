@@ -3,6 +3,7 @@ package com.b18060412.superdiary;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,8 @@ import com.b18060412.superdiary.network.responses.ApiResponseNotList;
 import com.b18060412.superdiary.network.responses.DiaryResponse;
 import com.b18060412.superdiary.network.responses.WeekReportResponse;
 import com.b18060412.superdiary.util.MyDateStringUtil;
+import com.b18060412.superdiary.util.PreferenceKeys;
+import com.b18060412.superdiary.util.PreferencesUtil;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
 
@@ -41,6 +44,8 @@ import retrofit2.Response;
 
 
 public class MainActivityNew extends AppCompatActivity {
+    String userUuid;
+    private static final String TAG = "kyw_MainActivityNew";
     private Map<String, Calendar> map = new HashMap<>();//存放已经填写的日期，进行绘制
     private List<DiaryResponse> diaryList = new ArrayList<>();//存放已经填写的日记
     private TextView tvYearMonth;
@@ -64,11 +69,33 @@ public class MainActivityNew extends AppCompatActivity {
     private String selectDay = "";
     private String selectMonth = "";
     private String selectYear = "";
+    //日报模块是否显示 周报模块是否显示
+    private boolean showDiary = false;
+    private boolean showWeeklyReport = false;
+    //存储获取到的周报 以及周报标题 以及周报开始结束日期
+    private WeekReportResponse weeklyReportResponse;
+    String weeklyReportTittle;
+    String weeklyReportStartDate;
+    String weeklyReportEndDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_new);
+        //获取uuid
+        // 初始化 PreferencesUtil (如果尚未初始化)
+        PreferencesUtil.init(MainActivityNew.this); // context 传入当前上下文，如 Activity.this 或 getApplicationContext()
+
+        // 获取存储的 UUID
+        userUuid = PreferencesUtil.getString(PreferenceKeys.USER_UUID_KEY, null);
+
+        if (userUuid != null) {
+            Log.d("kyw_OtherActivity", "获取到的 UUID: " + userUuid);
+        } else {
+            Log.d("kyw_OtherActivity", "UUID 未找到");
+        }
+
+
         tvYearMonth = findViewById(R.id.tv_year_month);
         calendarView = findViewById(R.id.CV_calendar);
         generateWeeklyReportButton = findViewById(R.id.BTN_gene);
@@ -148,6 +175,24 @@ public class MainActivityNew extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // 设置周报模块点击事件：携带周报内容跳转到日记编辑页面
+        weeklyReportFrameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "点击了周报模块");
+                Intent intent = new Intent(MainActivityNew.this, UpdateWeeklyReportResultActivity.class);
+                intent.putExtra("weeklyTittle", weeklyReportTittle);
+                intent.putExtra("weeklyReportStartDate", weeklyReportStartDate);
+                intent.putExtra("weeklyReportEndDate", weeklyReportEndDate);
+                intent.putExtra("weeklyReportContent", weeklyReportResponse.getContent());
+                intent.putExtra("weeklyReportMind", weeklyReportResponse.getMind());
+                startActivity(intent);
+            }
+        });
+
+        //默认先显示logo模块
+        updateVisibility(showDiary, showWeeklyReport);
     }
 
     @Override
@@ -185,11 +230,10 @@ public class MainActivityNew extends AppCompatActivity {
             @Override
             public void onCalendarSelect(Calendar calendar, boolean b) {
                 // 当日期被选中时回调
-                showLogoModule();//显示logo模块
                 selectDay = String.valueOf(calendar.getDay());
                 selectMonth = String.valueOf(calendar.getMonth());
                 selectYear = String.valueOf(calendar.getYear());
-                Log.d("kyw", "选中的日期是：" + selectDay + " " + selectMonth + " " + selectYear);
+                Log.d("kyw_MainActivityNew", "选中的日期是：" + selectDay + " " + selectMonth + " " + selectYear);
 
                 int year = calendar.getYear();
                 int month = calendar.getMonth();
@@ -225,7 +269,8 @@ public class MainActivityNew extends AppCompatActivity {
                 // 如果找到了对应的日记，显示其内容
                 if (diaryResponse != null) {
                     //显示日记模块
-                    showDiaryModule();
+                    showDiary = true;
+                    updateVisibility(showDiary, showWeeklyReport);
                     // 显示日记内容
                     textViewDiaryContent.setText(diaryResponse.getContent());
                     //显示日记日期
@@ -233,10 +278,16 @@ public class MainActivityNew extends AppCompatActivity {
                     textViewDiaryYearMonth.setText(year + "年" + month + "月");
                 } else {
                     // 如果没有找到对应的日记，则隐藏日报模块
-                    hideDiaryModule();
+                    showDiary = false;
+                    updateVisibility(showDiary, showWeeklyReport);
                 }
+                //获取周报
                 // 用户点击日历某一天之后，查询那一天所在周的周报，没有的话就不展示周报模块，有就展示周报模块
-                getWeeklyReport(MyDateStringUtil.formatDateToTransfer(selectDay, selectMonth, selectYear));
+                try {
+                    getWeeklyReport(MyDateStringUtil.formatDateToTransfer(selectDay, selectMonth, selectYear));
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -254,7 +305,7 @@ public class MainActivityNew extends AppCompatActivity {
      */
     private com.haibin.calendarview.Calendar getSchemeCalendar(String dateString) {
         com.haibin.calendarview.Calendar calendar = new com.haibin.calendarview.Calendar();
-//        Log.d("kyw", "onBindViewHolder: " + dateString);
+//        Log.d("kyw_MainActivityNew", "onBindViewHolder: " + dateString);
         // 提取年月日字段
         OffsetDateTime dateTime = OffsetDateTime.parse(dateString, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         String year = String.valueOf(dateTime.getYear());
@@ -277,7 +328,9 @@ public class MainActivityNew extends AppCompatActivity {
         DiaryService diaryService = RetrofitClient.getClient().create(DiaryService.class);
         String startTime = "2020-01-01";
         String endTime = "2029-01-01";
-        Call<ApiResponse<DiaryResponse>> call = diaryService.getDiaryData(startTime, endTime);
+        String uuid = userUuid;
+        Log.d("kyw_MainActivityNew", "uuid: " + uuid);
+        Call<ApiResponse<DiaryResponse>> call = diaryService.getDiaryData(uuid,startTime, endTime);
         call.enqueue(new Callback<ApiResponse<DiaryResponse>>() {
             @Override
             public void onResponse(Call<ApiResponse<DiaryResponse>> call, Response<ApiResponse<DiaryResponse>> response) {
@@ -286,7 +339,7 @@ public class MainActivityNew extends AppCompatActivity {
                     if (apiResponse != null && apiResponse.getData() != null) {
                         diaryList.clear();
                         diaryList = apiResponse.getData();
-                        Log.d("kyw", "onResponse: " + diaryList.size());
+                        Log.d("kyw_MainActivityNew", "onResponse是多少: " + diaryList.size());
 
                         for (DiaryResponse item : diaryList) {
                             //key key: 2024-08-20T00:00:00+08:00 value 2024-08-20T00:00:00+08:00
@@ -320,7 +373,7 @@ public class MainActivityNew extends AppCompatActivity {
         textViewDiaryContent.setVisibility(View.VISIBLE);
         textViewDiaryDate.setVisibility(View.VISIBLE);
         textViewDiaryYearMonth.setVisibility(View.VISIBLE);
-        hideLogoModule();//隐藏logo模块
+
     }
 
     //隐藏日记模块
@@ -330,13 +383,15 @@ public class MainActivityNew extends AppCompatActivity {
         textViewDiaryDate.setVisibility(View.GONE);
         textViewDiaryYearMonth.setVisibility(View.GONE);
     }
+
     //显示周报模块
     private void showWeekReportModule() {
         weeklyReportFrameLayout.setVisibility(View.VISIBLE);
         textViewWeeklyReportContent.setVisibility(View.VISIBLE);
         textViewWeeklyReportTittle.setVisibility(View.VISIBLE);
-        hideLogoModule();//隐藏logo模块
+
     }
+
     //隐藏周报模块
     private void hideWeekReportModule() {
         weeklyReportFrameLayout.setVisibility(View.GONE);
@@ -360,14 +415,14 @@ public class MainActivityNew extends AppCompatActivity {
     //显示用户添加成功后，返回的日记模块，遍历日记list，找到用户添加的日记，显示到首页
     private void showBackDiary() {
         //这里解决首次进入app时，selectMonth selectDay selectYear为空，导致无法显示今天已经填写的日记模块
-        if (TextUtils.isEmpty(selectMonth) || TextUtils.isEmpty(selectDay) || TextUtils.isEmpty(selectYear)){
+        if (TextUtils.isEmpty(selectMonth) || TextUtils.isEmpty(selectDay) || TextUtils.isEmpty(selectYear)) {
             selectMonth = String.valueOf(calendarView.getCurMonth());
             selectDay = String.valueOf(calendarView.getCurDay());
             selectYear = String.valueOf(calendarView.getCurYear());
         }
         for (DiaryResponse item : diaryList) {
-           String date = MyDateStringUtil.getFirstTenChars(item.getDate());
-           String selectDate = MyDateStringUtil.formatDateToTransfer(selectDay, selectMonth, selectYear);
+            String date = MyDateStringUtil.getFirstTenChars(item.getDate());
+            String selectDate = MyDateStringUtil.formatDateToTransfer(selectDay, selectMonth, selectYear);
             //如果选中的日期 和 list中的日期相同，则显示日记模块
             if (date.equals(selectDate)) {
                 // 显示选中的日期
@@ -375,41 +430,79 @@ public class MainActivityNew extends AppCompatActivity {
                 //显示日记日期
                 textViewDiaryDate.setText(selectDay);
                 textViewDiaryYearMonth.setText(selectYear + "年" + selectMonth + "月");
-                showDiaryModule();
+                showDiary = true;
+                updateVisibility(showDiary, showWeeklyReport);
                 return;
             }
         }
-        hideDiaryModule();
+        showDiary = false;
+        updateVisibility(showDiary, showWeeklyReport);
     }
 
     //获取选中的周报数据
-    private void getWeeklyReport(String day){
+    private void getWeeklyReport(String day) throws ParseException {
+        Log.d(TAG, "开始获取周报");
         WeeklyReportService weeklyReportService = RetrofitClient.getClient().create(WeeklyReportService.class);
-        String uuid = "123456";
-        Call<ApiResponseNotList<WeekReportResponse>> call = weeklyReportService.getWeeklyReportByDay(day,uuid);
+        String uuid = userUuid;
+        String startTime = MyDateStringUtil.getWeekStartAndEnd(day)[0];
+        String endTime = MyDateStringUtil.getWeekStartAndEnd(day)[1];
+        Log.d(TAG, "查询周报 -- 开始时间：" + startTime + "结束时间：" + endTime);
+        weeklyReportStartDate = startTime;//获取周报的开始时间 保存 用于传输给下个页面
+        weeklyReportEndDate = endTime;//获取周报的结束时间 保存 用于传输给下个页面
+        Call<ApiResponseNotList<WeekReportResponse>> call = weeklyReportService.getWeeklyReportByDay(uuid, startTime, endTime);
         call.enqueue(new Callback<ApiResponseNotList<WeekReportResponse>>() {
             @Override
             public void onResponse(Call<ApiResponseNotList<WeekReportResponse>> call, Response<ApiResponseNotList<WeekReportResponse>> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && !TextUtils.isEmpty(response.body().getData().getContent())) {
+                    Log.d(TAG, "获取周报成功111");
                     ApiResponseNotList<WeekReportResponse> apiResponse = response.body();
+                    weeklyReportResponse = apiResponse.getData();
                     if (apiResponse != null && apiResponse.getData() != null) {
                         //如果获取到数据，则显示数据，否则默认隐藏周报模块
-                        showWeekReportModule();
-                        textViewWeeklyReportContent.setText(apiResponse.getData().getContent());
-                        textViewWeeklyReportTittle.setText("本周周报");
-                    } else {
-                        NetworkConnectionError();
-                        hideWeekReportModule();
+                        showWeeklyReport = true;
+                        updateVisibility(showDiary, showWeeklyReport);
+                        //周报内容 能支持换行
+                        textViewWeeklyReportContent.setText(Html.fromHtml(apiResponse.getData().getContent(), Html.FROM_HTML_MODE_LEGACY));
+                        weeklyReportTittle = MyDateStringUtil.formatDateToMonthDayChinese(startTime) + "至" + MyDateStringUtil.formatDateToMonthDayChinese(endTime) + "周报";
+                        textViewWeeklyReportTittle.setText(weeklyReportTittle);
                     }
+                } else {
+                    Log.d(TAG, "获取周报失败111");
+                    showWeeklyReport = false;
+                    updateVisibility(showDiary, showWeeklyReport);
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponseNotList<WeekReportResponse>> call, Throwable t) {
+                Log.d(TAG, "获取周报失败222");
                 NetworkConnectionError();
-                hideWeekReportModule();
+                showWeeklyReport = false;
+                updateVisibility(showDiary, showWeeklyReport);
             }
         });
     }
+
+    private void updateVisibility(boolean showDiary, boolean showWeeklyReport) {
+        if (showDiary) {
+            showDiaryModule();
+        } else {
+            hideDiaryModule();
+        }
+
+        if (showWeeklyReport) {
+            showWeekReportModule();
+        } else {
+            hideWeekReportModule();
+        }
+
+        // 如果周报和日报模块都不可见，则显示 logo 模块
+        if (!showDiary && !showWeeklyReport) {
+            showLogoModule();
+        } else {
+            hideLogoModule();
+        }
+    }
+
 
 }

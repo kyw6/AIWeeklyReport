@@ -41,23 +41,13 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="6855cc5045b9b29cd9352edb6a2a4d7e"/>
-        <activity android:name=".DiaryActivity"
-            android:windowSoftInputMode="adjustPan">
-        </activity>
+
         <activity android:name=".MainActivityNew"
             android:windowSoftInputMode="adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".GenerateWeeklyReportActivity"
             android:windowSoftInputMode="adjustPan">
-        </activity>
-
-        <activity android:name=".MainActivity">
-
         </activity>
 
         <activity android:name=".MyPageActivity"
@@ -79,6 +69,30 @@
         <activity android:name=".GenerateWeeklyReportResultActivity"
             android:windowSoftInputMode="adjustPan">
         </activity>
+
+        <activity android:name=".UpdateWeeklyReportResultActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+        <activity android:name=".OKRActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+
+        <activity android:name=".LoginActivity"
+            android:windowSoftInputMode="adjustPan">
+
+        </activity>
+
+        <activity android:name=".FirstActivity"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
+
+
+
 
 </manifest>

@@ -3,11 +3,16 @@ package com.b18060412.superdiary;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
+import android.text.InputType;
 import android.util.Log;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,13 +31,16 @@ import retrofit2.Response;
 public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
     private static final String TAG = "kyw_GWResultActivity";
     private TextView tvHeadShowTime;//顶部时间文字
-    private ImageView jump_to_mind;
     private LinearLayout loadingLayout;
-    private EditText et_content;
     private String startTimeStr = null;//用户选择的起始时间，格式为2024-08-23
     private String endTimeStr = null;//用户选择的结束时间
     private String uuid = null;//用户id
 
+    private EditText et_content;
+    private ImageView backButton;
+    private ImageView moreButton;//更多按钮
+    private ImageView jump_to_mind;//思维导图
+    private ImageView doneButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +49,9 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
         loadingLayout = findViewById(R.id.loading_layout);
         et_content = findViewById(R.id.et_content);
         tvHeadShowTime = findViewById(R.id.tv_head_show_time);
+        backButton = findViewById(R.id.ic_back);
+        moreButton = findViewById(R.id.ic_more);
+        doneButton = findViewById(R.id.ic_nike);
 
         Intent dataIntent = getIntent();
         startTimeStr = dataIntent.getStringExtra("start_time_str");
@@ -64,28 +75,29 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
             loadData();//请求周报数据
             initTvHeadShowTime();//顶部文字初始化
         }
-
-
+        backButton.setOnClickListener(v -> finish());
+        moreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopupMenu(view);
+            }
+        });
+        doneButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(GenerateWeeklyReportResultActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+                moreButton.setVisibility(View.VISIBLE);
+                doneButton.setVisibility(View.GONE);
+            }
+        });
     }
 
 
     private void loadData() {
-        getWeeklyReportData(startTimeStr, endTimeStr, uuid);//发起网络请求
-
         // 显示 Loading 页面
         showLoading();
+        getWeeklyReportData(startTimeStr, endTimeStr, uuid);//发起网络请求
 
-        // 模拟网络请求（可以替换为真实的网络请求代码）
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // 网络请求完成，隐藏 Loading 页面
-                hideLoading();
-
-                // 显示请求到的数据
-                showContent();
-            }
-        }, 3000); // 模拟3秒的网络请求
     }
 
     private void showLoading() {
@@ -98,10 +110,6 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
         et_content.setVisibility(View.VISIBLE);
     }
 
-    private void showContent() {
-        // 在这里设置请求到的数据到你的UI元素上
-        // 比如更新TextView, RecyclerView等
-    }
 
     private void getWeeklyReportData(String start_time, String end_time, String uuid) {
 
@@ -112,11 +120,13 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
         call.enqueue(new Callback<ApiResponseNotList<WeekReportResponse>>() {
             @Override
             public void onResponse(Call<ApiResponseNotList<WeekReportResponse>> call, Response<ApiResponseNotList<WeekReportResponse>> response) {
+                hideLoading();
                 if (response.isSuccessful()) {
                     ApiResponseNotList<WeekReportResponse> apiResponse = response.body();
                     if (apiResponse != null && apiResponse.getData() != null) {
                         WeekReportResponse weekReportResponse = apiResponse.getData();
-                        et_content.setText(weekReportResponse.getContent());
+                        et_content.setText(Html.fromHtml(weekReportResponse.getContent(), Html.FROM_HTML_MODE_LEGACY));
+//                        et_content.setText(weekReportResponse.getContent());
                         Log.d(TAG, "获取周报成功-周报id" + weekReportResponse.getWrID());
                     } else {
                         Log.d(TAG, "获取周报失败111");
@@ -129,8 +139,9 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ApiResponseNotList<WeekReportResponse>> call, Throwable t) {
-                Log.d("TAG", "获取周报失败222");
-                Log.d("TAG", "网络请求失败: " + t.getMessage());
+                hideLoading();
+                Log.d(TAG, "获取周报失败222");
+                Log.d(TAG, "网络请求失败: " + t.getMessage());
                 Toast.makeText(GenerateWeeklyReportResultActivity.this, "网络请求失败", Toast.LENGTH_SHORT).show();
             }
 
@@ -167,5 +178,43 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
             return str.substring(1);
         }
         return str;
+    }
+
+    // 显示弹出菜单
+    private void showPopupMenu(View view) {
+
+        // 创建 PopupMenu 对象
+        PopupMenu popupMenu = new PopupMenu(this, view);
+
+        // 加载菜单资源
+        MenuInflater inflater = popupMenu.getMenuInflater();
+        inflater.inflate(R.menu.weekly_report_popup_menu, popupMenu.getMenu());
+
+        // 设置菜单项点击事件
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_edit:
+                        Toast.makeText(GenerateWeeklyReportResultActivity.this, "进入修改模式", Toast.LENGTH_SHORT).show();
+                        // 使 EditText 可编辑
+                        et_content.setFocusable(true);
+                        et_content.setFocusableInTouchMode(true);
+                        et_content.setClickable(true);
+                        et_content.setEnabled(true); // 确保 EditText 可以编辑并响应用户输入
+                        moreButton.setVisibility(View.GONE);
+                        doneButton.setVisibility(View.VISIBLE);
+                        return true;
+                    case R.id.action_delete:
+                        Toast.makeText(GenerateWeeklyReportResultActivity.this, "删除", Toast.LENGTH_SHORT).show();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+
+        // 显示菜单
+        popupMenu.show();
     }
 }

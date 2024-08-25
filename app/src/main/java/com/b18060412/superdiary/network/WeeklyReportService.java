@@ -9,6 +9,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 //周报相关
@@ -23,11 +24,13 @@ public interface WeeklyReportService {
 
     );
 
-    //查看某一天的周报 TODO 修改路径
-    @GET("record/summarize/day")
+    //查看某一天的周报
+    @GET("record/week/{uuid}")
     Call<ApiResponseNotList<WeekReportResponse>> getWeeklyReportByDay(
-            @Query("start_time") String time,
-            @Query("uuid") String uuid
+            @Path("uuid") String uuid,
+            @Query("start_time") String startTime,
+            @Query("end_time") String endTime
+
 
     );
 

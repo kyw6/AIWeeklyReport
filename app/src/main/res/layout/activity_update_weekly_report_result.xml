@@ -7,55 +7,57 @@
     android:orientation="vertical"
     tools:context=".MindActivity">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="50dp"
-    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
 
-    <ImageView
-        android:id="@+id/ic_back"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="10sp"
-        android:layout_marginRight="10sp"
-        android:src="@drawable/ic_back_yellow"
-        android:layout_gravity="center"
-        />
-    <View
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        />
-    <ImageView
-        android:id="@+id/jump_mind"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10sp"
-        android:layout_marginRight="10sp"
-        android:src="@drawable/jump_mind"
-        android:layout_gravity="center"
-        />
-    <ImageView
-        android:id="@+id/ic_more"
-        android:layout_width="26dp"
-        android:layout_height="26dp"
-        android:layout_marginLeft="10sp"
-        android:layout_marginRight="20dp"
-        android:src="@drawable/ic_more"
-        android:layout_gravity="center"
-        />
-    <ImageView
-        android:id="@+id/ic_nike"
-        android:layout_width="26dp"
-        android:layout_height="26dp"
-        android:layout_marginLeft="10sp"
-        android:layout_marginRight="20dp"
-        android:src="@drawable/ic_nike"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        />
+        <ImageView
+            android:id="@+id/ic_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:src="@drawable/ic_back_yellow"
+            android:layout_gravity="center"
+            />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+        <ImageView
+            android:id="@+id/jump_mind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:src="@drawable/jump_mind"
+            android:layout_gravity="center"
+            />
+        <ImageView
+            android:id="@+id/ic_more"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/ic_more"
+            android:layout_gravity="center"
+            />
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/ic_nike"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/ic_nike"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            />
+
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -121,13 +123,13 @@
             android:layout_marginTop="560dp"
             android:background="#F0F0F0"
             android:gravity="top|start"
-            android:inputType="textMultiLine"
-            android:hint="周报内容..."
+            android:hint="周报内容...\n 你好你好"
             android:padding="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dashed_line"
+            android:inputType="textMultiLine"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:clickable="false"
