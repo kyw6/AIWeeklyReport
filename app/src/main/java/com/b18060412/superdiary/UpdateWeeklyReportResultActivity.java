@@ -2,6 +2,7 @@ package com.b18060412.superdiary;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,8 +14,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.b18060412.superdiary.util.PreferenceKeys;
+import com.b18060412.superdiary.util.PreferencesUtil;
+
 //修改周报
 public class UpdateWeeklyReportResultActivity  extends AppCompatActivity {
+    String userUuid;
     private static final String TAG = "kyw_UWResultActivity";
     //获取的数据
     private String weeklyReportTittle;
@@ -36,6 +41,18 @@ public class UpdateWeeklyReportResultActivity  extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_weekly_report_result);
+        //获取uuid
+        // 初始化 PreferencesUtil (如果尚未初始化)
+        PreferencesUtil.init(UpdateWeeklyReportResultActivity.this); // context 传入当前上下文，如 Activity.this 或 getApplicationContext()
+
+        // 获取存储的 UUID
+        userUuid = PreferencesUtil.getString(PreferenceKeys.USER_UUID_KEY, null);
+
+        if (userUuid != null) {
+            Log.d("kyw_OtherActivity", "获取到的 UUID: " + userUuid);
+        } else {
+            Log.d("kyw_OtherActivity", "UUID 未找到");
+        }
         //前面的界面传过来的数据
 
 //        intent.putExtra("weeklyTittle", weeklyReportTittle);
@@ -51,7 +68,7 @@ public class UpdateWeeklyReportResultActivity  extends AppCompatActivity {
         weeklyReportEndDate = dataIntent.getStringExtra("weeklyReportEndDate");
         weeklyReportContent = dataIntent.getStringExtra("weeklyReportContent");
         weeklyReportMind = dataIntent.getStringExtra("weeklyReportMind");
-        String uuid = "123456";
+        String uuid = userUuid;
         //页面
         tittle = findViewById(R.id.tv_head_show_time);
         content = findViewById(R.id.et_content);

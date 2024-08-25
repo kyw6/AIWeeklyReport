@@ -14,6 +14,8 @@ import com.b18060412.superdiary.network.WeeklyReportService;
 import com.b18060412.superdiary.network.responses.ApiResponseNotList;
 import com.b18060412.superdiary.network.responses.WeekReportResponse;
 import com.b18060412.superdiary.util.MyDateStringUtil;
+import com.b18060412.superdiary.util.PreferenceKeys;
+import com.b18060412.superdiary.util.PreferencesUtil;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
 
@@ -27,6 +29,7 @@ import retrofit2.Response;
 
 //生成周报
 public class GenerateWeeklyReportActivity extends AppCompatActivity {
+    String userUuid;
     private static final String TAG = "kyw_GWActivity";
     private TextView tvYearMonth;
     private CalendarView calendarView;//日期
@@ -48,6 +51,19 @@ public class GenerateWeeklyReportActivity extends AppCompatActivity {
         initSelectedDate();//初始化日期选择
         initGenerateWeeklyReport();//初始化生成周报按钮
         Log.d(TAG, "111 map.toString()" + map.toString());
+
+        //获取uuid
+        // 初始化 PreferencesUtil (如果尚未初始化)
+        PreferencesUtil.init(GenerateWeeklyReportActivity.this); // context 传入当前上下文，如 Activity.this 或 getApplicationContext()
+
+        // 获取存储的 UUID
+        userUuid = PreferencesUtil.getString(PreferenceKeys.USER_UUID_KEY, null);
+
+        if (userUuid != null) {
+            Log.d("kyw_OtherActivity", "获取到的 UUID: " + userUuid);
+        } else {
+            Log.d("kyw_OtherActivity", "UUID 未找到");
+        }
     }
 
     //初始化顶部文字显示
@@ -131,7 +147,7 @@ public class GenerateWeeklyReportActivity extends AppCompatActivity {
 
                 //传输选中的日期 给下个Activity
                 Toast.makeText(this, "开始生成周报", Toast.LENGTH_SHORT).show();
-                String uuid = "123456";
+                String uuid = userUuid;
                 String start_time_str = MyDateStringUtil.formatDateToTransfer(firstDay, firstDayMonth, firstDayYear);
                 String end_time_str = MyDateStringUtil.formatDateToTransfer(lastDay, lastDayMonth, lastDayYear);
                 Log.d(TAG, "start_time_str" + start_time_str + "end_time_str" + end_time_str);
