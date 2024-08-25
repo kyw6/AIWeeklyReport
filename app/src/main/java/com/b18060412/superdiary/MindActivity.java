@@ -117,10 +117,11 @@ public class MindActivity extends AppCompatActivity {
                 api.modifyMind(wrid, uuid, getMindStructure(adapter.getTreeModel())).enqueue(new Callback<Result>() {
                     @Override
                     public void onResponse(Call<Result> call, Response<Result> response) {
-                        if (response.body().getCode() == 0) {
+                        if (response.body().getCode() == 200) {
                             showToast("思维导图保存成功");
+                        } else {
+                            showToast("思维导图保存失败: " + response.body().getMsg());
                         }
-//                        showToast("思维导图保存成功");
                     }
 
                     @Override
