@@ -18,15 +18,13 @@ public class FirstActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
-        imageView = findViewById(R.id.start_button);
-        imageView.setOnClickListener(v -> {
-            //跳转到mainActivity
-            Intent intent = new Intent(FirstActivity.this,MainActivityNew.class);
-            startActivity(intent);
-            finish();
-        });
+//        imageView = findViewById(R.id.start_button);
         //做伪登录
         fackLogin();
+        //跳转到mainActivity
+        Intent intent = new Intent(FirstActivity.this,MainActivityNew.class);
+        startActivity(intent);
+        finish();
     }
 
     private void fackLogin() {
