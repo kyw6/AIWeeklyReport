@@ -16,6 +16,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.b18060412.superdiary.util.MyDateStringUtil;
+import com.b18060412.superdiary.util.PreferenceKeys;
+import com.b18060412.superdiary.util.PreferencesUtil;
 
 import org.json.JSONObject;
 import java.io.OutputStream;
@@ -29,7 +31,7 @@ import java.util.concurrent.Executors;
 
 // 添加日报、修改日报
 public class AddDiaryActivity extends AppCompatActivity {
-
+    String userUuid;
     private ExecutorService executorService;
     private String selectDay = "";
     private String selectMonth = "";
@@ -40,6 +42,19 @@ public class AddDiaryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_diary);
+
+        //获取uuid
+        // 初始化 PreferencesUtil (如果尚未初始化)
+        PreferencesUtil.init(AddDiaryActivity.this); // context 传入当前上下文，如 Activity.this 或 getApplicationContext()
+
+        // 获取存储的 UUID
+        userUuid = PreferencesUtil.getString(PreferenceKeys.USER_UUID_KEY, null);
+
+        if (userUuid != null) {
+            Log.d("kyw_OtherActivity", "获取到的 UUID: " + userUuid);
+        } else {
+            Log.d("kyw_OtherActivity", "UUID 未找到");
+        }
 
         // 初始化线程池
         executorService = Executors.newSingleThreadExecutor();
@@ -80,7 +95,7 @@ public class AddDiaryActivity extends AppCompatActivity {
     }
     private void sendDataToServer(String date, String content) {
         try {
-            String userId = "123456";
+            String userId = userUuid;
             date = MyDateStringUtil.formatDateToTransfer(selectDay,selectMonth,selectYear);
             Log.d("kyw","选中的日期，格式化之后是：" + date);
             // 设置请求的URL

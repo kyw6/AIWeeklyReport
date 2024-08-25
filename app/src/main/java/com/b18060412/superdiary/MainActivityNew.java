@@ -21,6 +21,8 @@ import com.b18060412.superdiary.network.responses.ApiResponseNotList;
 import com.b18060412.superdiary.network.responses.DiaryResponse;
 import com.b18060412.superdiary.network.responses.WeekReportResponse;
 import com.b18060412.superdiary.util.MyDateStringUtil;
+import com.b18060412.superdiary.util.PreferenceKeys;
+import com.b18060412.superdiary.util.PreferencesUtil;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
 
@@ -41,6 +43,7 @@ import retrofit2.Response;
 
 
 public class MainActivityNew extends AppCompatActivity {
+    String userUuid;
     private static final String TAG = "kyw_MainActivityNew";
     private Map<String, Calendar> map = new HashMap<>();//存放已经填写的日期，进行绘制
     private List<DiaryResponse> diaryList = new ArrayList<>();//存放已经填写的日记
@@ -78,6 +81,20 @@ public class MainActivityNew extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_new);
+        //获取uuid
+        // 初始化 PreferencesUtil (如果尚未初始化)
+        PreferencesUtil.init(MainActivityNew.this); // context 传入当前上下文，如 Activity.this 或 getApplicationContext()
+
+        // 获取存储的 UUID
+        userUuid = PreferencesUtil.getString(PreferenceKeys.USER_UUID_KEY, null);
+
+        if (userUuid != null) {
+            Log.d("kyw_OtherActivity", "获取到的 UUID: " + userUuid);
+        } else {
+            Log.d("kyw_OtherActivity", "UUID 未找到");
+        }
+
+
         tvYearMonth = findViewById(R.id.tv_year_month);
         calendarView = findViewById(R.id.CV_calendar);
         generateWeeklyReportButton = findViewById(R.id.BTN_gene);
@@ -310,7 +327,9 @@ public class MainActivityNew extends AppCompatActivity {
         DiaryService diaryService = RetrofitClient.getClient().create(DiaryService.class);
         String startTime = "2020-01-01";
         String endTime = "2029-01-01";
-        Call<ApiResponse<DiaryResponse>> call = diaryService.getDiaryData(startTime, endTime);
+        String uuid = userUuid;
+        Log.d("kyw_MainActivityNew", "uuid: " + uuid);
+        Call<ApiResponse<DiaryResponse>> call = diaryService.getDiaryData(uuid,startTime, endTime);
         call.enqueue(new Callback<ApiResponse<DiaryResponse>>() {
             @Override
             public void onResponse(Call<ApiResponse<DiaryResponse>> call, Response<ApiResponse<DiaryResponse>> response) {
@@ -319,7 +338,7 @@ public class MainActivityNew extends AppCompatActivity {
                     if (apiResponse != null && apiResponse.getData() != null) {
                         diaryList.clear();
                         diaryList = apiResponse.getData();
-                        Log.d("kyw_MainActivityNew", "onResponse: " + diaryList.size());
+                        Log.d("kyw_MainActivityNew", "onResponse是多少: " + diaryList.size());
 
                         for (DiaryResponse item : diaryList) {
                             //key key: 2024-08-20T00:00:00+08:00 value 2024-08-20T00:00:00+08:00
@@ -423,7 +442,7 @@ public class MainActivityNew extends AppCompatActivity {
     private void getWeeklyReport(String day) throws ParseException {
         Log.d(TAG, "开始获取周报");
         WeeklyReportService weeklyReportService = RetrofitClient.getClient().create(WeeklyReportService.class);
-        String uuid = "123456";
+        String uuid = userUuid;
         String startTime = MyDateStringUtil.getWeekStartAndEnd(day)[0];
         String endTime = MyDateStringUtil.getWeekStartAndEnd(day)[1];
         Log.d(TAG, "查询周报 -- 开始时间：" + startTime + "结束时间：" + endTime);

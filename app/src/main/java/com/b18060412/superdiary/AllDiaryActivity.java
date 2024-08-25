@@ -43,7 +43,8 @@ public class AllDiaryActivity extends AppCompatActivity {
         DiaryService diaryService = RetrofitClient.getClient().create(DiaryService.class);
         String startTime = "2024-07-14";
         String endTime = "2024-09-14";
-        Call<ApiResponse<DiaryResponse>> call = diaryService.getDiaryData(startTime,endTime);
+        String uuid = "123456";
+        Call<ApiResponse<DiaryResponse>> call = diaryService.getDiaryData(uuid,startTime,endTime);
         call.enqueue(new Callback<ApiResponse<DiaryResponse>>() {
             @Override
             public void onResponse(Call<ApiResponse<DiaryResponse>> call, Response<ApiResponse<DiaryResponse>> response) {
