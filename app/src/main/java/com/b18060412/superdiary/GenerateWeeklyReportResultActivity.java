@@ -93,22 +93,10 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
 
 
     private void loadData() {
-        getWeeklyReportData(startTimeStr, endTimeStr, uuid);//发起网络请求
-
         // 显示 Loading 页面
         showLoading();
+        getWeeklyReportData(startTimeStr, endTimeStr, uuid);//发起网络请求
 
-        // 模拟网络请求（可以替换为真实的网络请求代码）
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // 网络请求完成，隐藏 Loading 页面
-                hideLoading();
-
-                // 显示请求到的数据
-                showContent();
-            }
-        }, 3000); // 模拟3秒的网络请求
     }
 
     private void showLoading() {
@@ -121,10 +109,6 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
         et_content.setVisibility(View.VISIBLE);
     }
 
-    private void showContent() {
-        // 在这里设置请求到的数据到你的UI元素上
-        // 比如更新TextView, RecyclerView等
-    }
 
     private void getWeeklyReportData(String start_time, String end_time, String uuid) {
 
@@ -135,6 +119,7 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
         call.enqueue(new Callback<ApiResponseNotList<WeekReportResponse>>() {
             @Override
             public void onResponse(Call<ApiResponseNotList<WeekReportResponse>> call, Response<ApiResponseNotList<WeekReportResponse>> response) {
+                hideLoading();
                 if (response.isSuccessful()) {
                     ApiResponseNotList<WeekReportResponse> apiResponse = response.body();
                     if (apiResponse != null && apiResponse.getData() != null) {
@@ -152,6 +137,7 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ApiResponseNotList<WeekReportResponse>> call, Throwable t) {
+                hideLoading();
                 Log.d("TAG", "获取周报失败222");
                 Log.d("TAG", "网络请求失败: " + t.getMessage());
                 Toast.makeText(GenerateWeeklyReportResultActivity.this, "网络请求失败", Toast.LENGTH_SHORT).show();
