@@ -51,7 +51,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class MindActivity extends AppCompatActivity {
-    public static final String TAG = MainActivity.class.getSimpleName();
+    public static final String TAG = MainActivityNew.class.getSimpleName();
     private ActivityMindBinding binding;
     private Handler handler = new Handler();
     private boolean enableDrag = false;
