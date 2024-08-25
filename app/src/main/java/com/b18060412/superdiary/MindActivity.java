@@ -1,9 +1,15 @@
 package com.b18060412.superdiary;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.media.MediaScannerConnection;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -32,6 +38,8 @@ import com.gyso.treeview.listener.TreeViewControlListener;
 import com.gyso.treeview.model.NodeModel;
 import com.gyso.treeview.model.TreeModel;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -51,9 +59,9 @@ public class MindActivity extends AppCompatActivity {
     private Gson gson = RetrofitClient.getGson();
     private Retrofit retrofit = RetrofitClient.getClient();
     private String wrid;
-    private String uuid = "5ceb8625-5e25-11ef-8315-00ff2ab7625f";
-    private String startTime = "2024-08-14";
-    private String endTime = "2024-08-22";
+    private String uuid = null;
+    private String startTime = null;
+    private String endTime = null;
     MindApiService api;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +69,12 @@ public class MindActivity extends AppCompatActivity {
         binding = ActivityMindBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        Intent dataIntent = getIntent();
+        startTime = dataIntent.getStringExtra("start_time_str");
+        endTime = dataIntent.getStringExtra("end_time_str");
+        uuid = dataIntent.getStringExtra("uuid");
+
+        initTvHeadShowTime();
         initWidgets();
     }
 
@@ -77,6 +91,8 @@ public class MindActivity extends AppCompatActivity {
         binding.baseTreeView.setAdapter(adapter);
         binding.baseTreeView.setTreeLayoutManager(treeLayoutManager);
 
+
+
         //4 nodes data setting
         setData(adapter);
 
@@ -92,9 +108,9 @@ public class MindActivity extends AppCompatActivity {
             this.finish();
         });
 
-        binding.lTabBar.ibSwitch.setOnClickListener(view -> {
-            switchView(adapter);
-        });
+//        binding.lTabBar.ibSwitch.setOnClickListener(view -> {
+//            this.finish();
+//        });
 
         binding.lTabBar.ibSave.setOnClickListener(view -> {
             if (wrid != null) {
@@ -120,14 +136,35 @@ public class MindActivity extends AppCompatActivity {
             editor.requestMoveNodeByDragging(enableDrag);
             if (enableDrag) {
                 binding.ivDragSwitch.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.iv_float_icon_selected, null));
+                binding.ivDragSwitch.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.drag_selected, null));
+                showToast("再次点击可拖拽按钮即可放大缩小");
             } else {
                 binding.ivDragSwitch.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.iv_float_icon_unselected, null));
+                binding.ivDragSwitch.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.drag_unselected, null));
             }
         });
 
         //focus, means that tree view fill center in your window viewport
         binding.ivFocus.setOnClickListener(view -> {
             editor.focusMidLocation();
+        });
+
+        binding.ivFocus.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                int action = motionEvent.getAction() & MotionEvent.ACTION_MASK;
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        binding.ivFocus.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.iv_float_icon_selected, null));
+                        binding.ivFocus.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.focus_selected, null));
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        binding.ivFocus.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.iv_float_icon_unselected, null));
+                        binding.ivFocus.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.focus_unselected, null));
+                        break;
+                }
+                return true;
+            }
         });
 
         adapter.setItemClickListener((itemView, node)-> {
@@ -297,7 +334,20 @@ public class MindActivity extends AppCompatActivity {
                     public void run() {
                         adapter.setTreeModel(treeModel);
 //                        binding.tvWrContent.setText(getChildrenContent(treeModel.getRootNode(), 0));
-                        binding.tvWrContent.setText(weekRecord.getContent());
+//                        binding.tvWrContent.setText(weekRecord.getContent());
+//                        File capture = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "mind_capture.png");
+//                        try {
+//                            Bitmap bitmap = Bitmap.createBitmap(binding.baseTreeView.getWidth(), binding.baseTreeView.getHeight(), Bitmap.Config.ARGB_8888);
+//                            Canvas canvas = new Canvas(bitmap);
+//                            binding.baseTreeView.draw(canvas);
+//                            canvas.setBitmap(null);
+//                            FileOutputStream fos = new FileOutputStream(capture);
+//                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+//                            fos.flush();
+//                            fos.close();
+//                        } catch (Exception e) {
+//                            Log.i(TAG, "run: " + e.getMessage());
+//                        }
                     }
                 });
             }
@@ -382,5 +432,35 @@ public class MindActivity extends AppCompatActivity {
         } else {
             return number2Title3(number);
         }
+    }
+
+    private void initTvHeadShowTime() {
+        String result;
+        // 分割开始日期和结束日期
+        String[] startParts = startTime.split("-");
+        String[] endParts = endTime.split("-");
+
+        // 获取月、日
+        String startMonth = startParts[1];
+        String startDay = startParts[2];
+        String endMonth = endParts[1];
+        String endDay = endParts[2];
+
+        // 去除前导零
+        startMonth = removeLeadingZero(startMonth);
+        endMonth = removeLeadingZero(endMonth);
+        startDay = removeLeadingZero(startDay);
+        endDay = removeLeadingZero(endDay);
+
+        // 生成最终的格式化字符串
+        result = String.format("%s月%s日 - %s月%s日周报思维导图", startMonth, startDay, endMonth, endDay);
+        binding.tvTitle.setText(result);
+    }
+
+    private static String removeLeadingZero(String str) {
+        if (str.startsWith("0")) {
+            return str.substring(1);
+        }
+        return str;
     }
 }

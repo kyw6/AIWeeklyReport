@@ -37,11 +37,6 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generate_weekly_report_result);
-        jump_to_mind = findViewById(R.id.jump_mind);
-        jump_to_mind.setOnClickListener(v -> {
-            Intent jumpIntent = new Intent(GenerateWeeklyReportResultActivity.this, MindActivity.class);
-            startActivity(jumpIntent);
-        });
 
         loadingLayout = findViewById(R.id.loading_layout);
         et_content = findViewById(R.id.et_content);
@@ -51,6 +46,15 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
         startTimeStr = dataIntent.getStringExtra("start_time_str");
         endTimeStr = dataIntent.getStringExtra("end_time_str");
         uuid = dataIntent.getStringExtra("uuid");
+
+        jump_to_mind = findViewById(R.id.jump_mind);
+        jump_to_mind.setOnClickListener(v -> {
+            Intent jumpIntent = new Intent(GenerateWeeklyReportResultActivity.this, MindActivity.class);
+            jumpIntent.putExtra("start_time_str", startTimeStr);
+            jumpIntent.putExtra("end_time_str", endTimeStr);
+            jumpIntent.putExtra("uuid", uuid);
+            startActivity(jumpIntent);
+        });
 
         // 网络请求，获取周报
         if (startTimeStr == null || endTimeStr == null || uuid == null) {
