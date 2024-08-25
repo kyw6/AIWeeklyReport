@@ -3,6 +3,7 @@ package com.b18060412.superdiary;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
 import android.text.InputType;
 import android.util.Log;
 import android.view.MenuInflater;
@@ -124,7 +125,8 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
                     ApiResponseNotList<WeekReportResponse> apiResponse = response.body();
                     if (apiResponse != null && apiResponse.getData() != null) {
                         WeekReportResponse weekReportResponse = apiResponse.getData();
-                        et_content.setText(weekReportResponse.getContent());
+                        et_content.setText(Html.fromHtml(weekReportResponse.getContent(), Html.FROM_HTML_MODE_LEGACY));
+//                        et_content.setText(weekReportResponse.getContent());
                         Log.d(TAG, "获取周报成功-周报id" + weekReportResponse.getWrID());
                     } else {
                         Log.d(TAG, "获取周报失败111");
@@ -138,8 +140,8 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ApiResponseNotList<WeekReportResponse>> call, Throwable t) {
                 hideLoading();
-                Log.d("TAG", "获取周报失败222");
-                Log.d("TAG", "网络请求失败: " + t.getMessage());
+                Log.d(TAG, "获取周报失败222");
+                Log.d(TAG, "网络请求失败: " + t.getMessage());
                 Toast.makeText(GenerateWeeklyReportResultActivity.this, "网络请求失败", Toast.LENGTH_SHORT).show();
             }
 

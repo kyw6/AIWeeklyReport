@@ -3,6 +3,7 @@ package com.b18060412.superdiary;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -460,7 +461,8 @@ public class MainActivityNew extends AppCompatActivity {
                         //如果获取到数据，则显示数据，否则默认隐藏周报模块
                         showWeeklyReport = true;
                         updateVisibility(showDiary, showWeeklyReport);
-                        textViewWeeklyReportContent.setText(apiResponse.getData().getContent());
+                        //周报内容 能支持换行
+                        textViewWeeklyReportContent.setText(Html.fromHtml(apiResponse.getData().getContent(), Html.FROM_HTML_MODE_LEGACY));
                         weeklyReportTittle = MyDateStringUtil.formatDateToMonthDayChinese(startTime) + "至" + MyDateStringUtil.formatDateToMonthDayChinese(endTime) + "周报";
                         textViewWeeklyReportTittle.setText(weeklyReportTittle);
                     }

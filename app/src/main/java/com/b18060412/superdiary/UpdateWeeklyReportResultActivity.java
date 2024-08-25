@@ -83,7 +83,7 @@ public class UpdateWeeklyReportResultActivity  extends AppCompatActivity {
         //换行相关注释
 //        String text = "这是第一段文字。<br><br>这是第二段文字。<br><br>这是第三段文字。";
 //        et_content.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY));
-        et_content.setText(weeklyReportContent);
+        et_content.setText(Html.fromHtml(weeklyReportContent, Html.FROM_HTML_MODE_LEGACY));
 
         //传给思维导图页面
         jump_to_mind.setOnClickListener(v -> {
