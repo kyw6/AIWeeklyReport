@@ -125,6 +125,7 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
                     ApiResponseNotList<WeekReportResponse> apiResponse = response.body();
                     if (apiResponse != null && apiResponse.getData() != null) {
                         WeekReportResponse weekReportResponse = apiResponse.getData();
+                        Log.d(TAG, "获取周报成功-周报内容" + weekReportResponse.getContent());
                         et_content.setText(Html.fromHtml(weekReportResponse.getContent(), Html.FROM_HTML_MODE_LEGACY));
 //                        et_content.setText(weekReportResponse.getContent());
                         Log.d(TAG, "获取周报成功-周报id" + weekReportResponse.getWrID());
