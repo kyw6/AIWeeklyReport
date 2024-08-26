@@ -38,9 +38,20 @@
 <!--        />-->
 
     <ImageButton
+        android:id="@+id/ib_export_ppt"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="10sp"
+        android:src="@drawable/export_ppt"
+        android:layout_gravity="center"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        />
+
+    <ImageButton
         android:id="@+id/ib_save_mind"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginLeft="10sp"
         android:layout_marginRight="10sp"
         android:src="@drawable/save_to_file"
         android:layout_gravity="center"

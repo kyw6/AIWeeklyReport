@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -71,6 +72,9 @@ public class MindActivity extends AppCompatActivity {
     private String uuid = null;
     private String startTime = null;
     private String endTime = null;
+    private String pptDownloadDomain = "http://10.192.212.104:8000";
+    private String pptDownloadApi = "/myapp/pptdownload";
+    private String pptDownloadUrl = pptDownloadDomain + pptDownloadApi;
     MindApiService api;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +125,11 @@ public class MindActivity extends AppCompatActivity {
 //        binding.lTabBar.ibSwitch.setOnClickListener(view -> {
 //            this.finish();
 //        });
+
+        binding.lTabBar.ibExportPpt.setOnClickListener(view -> {
+            Uri uri = Uri.parse(pptDownloadUrl + "?uuid=" + uuid);
+            startActivity(new Intent(Intent.ACTION_VIEW, uri));
+        });
         
         binding.lTabBar.ibSaveMind.setOnClickListener(view -> {
 //            editor.focusMidLocation();
