@@ -57,7 +57,7 @@ public class MyPageActivity extends AppCompatActivity {
                 String userInput = input.getText().toString();
                 // 在这里处理用户输入
                 Intent intent = new Intent(MyPageActivity.this, OKRActivity.class);
-                intent.putExtra("email", userInput);
+                intent.putExtra("username", userInput);
                 startActivity(intent);
             }
         });

@@ -1,10 +1,12 @@
 package com.b18060412.superdiary;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -44,9 +46,12 @@ public class OKRActivity extends AppCompatActivity {
 
         // 创建OkrService实例
         OkrService okrService = retrofit.create(OkrService.class);
+        Intent intent = getIntent();
+        String username = intent.getStringExtra("username");
+        Log.d("mk_OkrActivity", "用户名：" + username);
 
         // 使用用户名发起请求
-        String username = "makang3";  // 替换为实际用户名
+//        String username = "makang3";  // 替换为实际用户名
         Call<OkrResponse> call = okrService.getOkrByUserName(username);
 
         // 显示加载动画
@@ -66,6 +71,7 @@ public class OKRActivity extends AppCompatActivity {
                     displayOkrData(okrResponse.getData());
                 } else {
                     Log.e("mk_OkrActivity", "请求失败：" + response.message());
+                    Toast.makeText(OKRActivity.this, "网络错误" , Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -73,7 +79,7 @@ public class OKRActivity extends AppCompatActivity {
             public void onFailure(Call<OkrResponse> call, Throwable t) {
                 // 隐藏加载动画
                 loadingProgressBar.setVisibility(View.GONE);
-
+                Toast.makeText(OKRActivity.this, "网络错误" , Toast.LENGTH_SHORT).show();
                 Log.e("mk_OkrActivity", "网络请求失败", t);
             }
         });
