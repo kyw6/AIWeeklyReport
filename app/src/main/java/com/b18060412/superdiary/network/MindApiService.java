@@ -1,6 +1,5 @@
 package com.b18060412.superdiary.network;
 
-import com.b18060412.superdiary.entity.MindRequestParam;
 import com.b18060412.superdiary.entity.Result;
 import com.b18060412.superdiary.entity.WeekRecord;
 import com.b18060412.superdiary.network.responses.ApiResponseNotList;

@@ -51,16 +51,22 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-
+//用于管理并展示思维导图，涉及到UI的初始化，数据加载，事件处理和思维导图的保存功能
 public class MindActivity extends AppCompatActivity {
+    //TAG=返回类名这里就是  TAG=MindActivity
     public static final String TAG = MindActivity.class.getSimpleName();
+    //用于绑定UI视图，方便访问布局中的UI元素
     private ActivityMindBinding binding;
+    //用于处理延迟任务或与主线程通信
     private Handler handler = new Handler();
+    //三个布尔变量，分别用于控制是否启用拖拽，是否显示思维导图，是否显示加载成功动画
     private boolean enableDrag = false;
     private boolean showMind = false;
     private boolean isShowLoading = true;
+    //使用RetrofitClient类初始化Gson和Retrofit对象，用于进行网络请求和JSON数据解析
     private Gson gson = RetrofitClient.getGson();
     private Retrofit retrofit = RetrofitClient.getClient();
+    //周报ID,uuid(用户ID),开始时间和结束时间
     private String wrid;
     private String uuid = null;
     private String startTime = null;
@@ -71,8 +77,9 @@ public class MindActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMindBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        //intent是一个用于在不同组件之间传递数据和启动活动的机制
         Intent dataIntent = getIntent();
+        //获取与name指定关联的字符串值，键名
         startTime = dataIntent.getStringExtra("start_time_str");
         endTime = dataIntent.getStringExtra("end_time_str");
         uuid = dataIntent.getStringExtra("uuid");
