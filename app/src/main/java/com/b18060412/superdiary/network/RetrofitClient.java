@@ -1,10 +1,11 @@
 package com.b18060412.superdiary.network;
 
 
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -19,10 +20,19 @@ public class RetrofitClient {
 //            .create();
 
     private static final Gson GSON = new Gson();
+
     public static Retrofit getClient() {
         if (retrofit == null) {
+            // 创建OkHttpClient并设置超时时间
+            OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .connectTimeout(60, TimeUnit.SECONDS)  // 连接超时
+                    .readTimeout(60, TimeUnit.SECONDS)     // 读取超时
+                    .writeTimeout(60, TimeUnit.SECONDS)    // 写入超时
+                    .build();
+
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
+                    .client(okHttpClient)  // 设置自定义的OkHttpClient
                     .addConverterFactory(GsonConverterFactory.create(GSON))
                     .build();
         }
