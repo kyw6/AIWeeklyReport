@@ -28,7 +28,7 @@ public class OKRActivity extends AppCompatActivity {
     private TextView resTextView;
     private TextView proposalTextView;
     private ProgressBar loadingProgressBar;
-
+    private TextView error_text_view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +40,7 @@ public class OKRActivity extends AppCompatActivity {
         resTextView = findViewById(R.id.res_text_view);
         proposalTextView = findViewById(R.id.proposal_text_view);
         loadingProgressBar = findViewById(R.id.loading_progress_bar);
-
+        error_text_view = findViewById(R.id.error_text_view);
         // 从RetrofitClient获取Retrofit实例
         Retrofit retrofit = RetrofitClient.getClient();
 
@@ -71,6 +71,7 @@ public class OKRActivity extends AppCompatActivity {
                     displayOkrData(okrResponse.getData());
                 } else {
                     Log.e("mk_OkrActivity", "请求失败：" + response.message());
+                    showErrorText();
                     Toast.makeText(OKRActivity.this, "网络错误" , Toast.LENGTH_SHORT).show();
                 }
             }
@@ -80,6 +81,7 @@ public class OKRActivity extends AppCompatActivity {
                 // 隐藏加载动画
                 loadingProgressBar.setVisibility(View.GONE);
                 Toast.makeText(OKRActivity.this, "网络错误" , Toast.LENGTH_SHORT).show();
+                showErrorText();
                 Log.e("mk_OkrActivity", "网络请求失败", t);
             }
         });
@@ -121,5 +123,9 @@ public class OKRActivity extends AppCompatActivity {
             formatted.append(item).append("\n");
         }
         return formatted.toString().trim();
+    }
+
+    void showErrorText(){
+        error_text_view.setVisibility(View.VISIBLE);
     }
 }
