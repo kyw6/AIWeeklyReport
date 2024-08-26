@@ -43,10 +43,10 @@
         android:layout_height="match_parent">
 
         <FrameLayout
-            android:id="@+id/rl_mind_container"
+            android:id="@+id/fl_mind_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible">
+            android:visibility="invisible">
 
             <com.gyso.treeview.GysoTreeView
                 android:id="@+id/base_tree_view"
@@ -105,23 +105,46 @@
             </TextView>
         </FrameLayout>
 
+<!--        <LinearLayout-->
+<!--            android:id="@+id/ll_wr_container"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="vertical"-->
+<!--            android:visibility="gone"-->
+<!--            android:layout_marginLeft="24dp"-->
+<!--            android:layout_marginRight="24dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            >-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_wr_content"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="周报总结"-->
+<!--                />-->
+
+<!--        </LinearLayout>-->
+
         <LinearLayout
-            android:id="@+id/ll_wr_container"
+            android:id="@+id/ll_loading_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="gone"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginTop="10dp"
-            >
+            android:gravity="center"
+            android:background="@color/white"
+            android:visibility="visible">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true" />
 
             <TextView
-                android:id="@+id/tv_wr_content"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="周报总结"
-                />
+                android:layout_marginTop="16dp"
+                android:text="生成思维导图中..."
+                android:textColor="@android:color/white" />
 
         </LinearLayout>
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,7 +44,11 @@ public class MindOperationDialogFragment extends DialogFragment {
             dismiss();
         });
         binding.llRemoveNodeContainer.setOnClickListener(childView -> {
-            editor.removeNode(node);
+            if (node.getParentNode() == null) {
+                Toast.makeText(getContext(), "不可删除根节点! ", Toast.LENGTH_SHORT).show();
+            } else {
+                editor.removeNode(node);
+            }
             dismiss();
         });
     }

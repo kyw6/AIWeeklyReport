@@ -3,6 +3,7 @@ package com.b18060412.superdiary;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Environment;
@@ -11,6 +12,7 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,11 +53,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class MindActivity extends AppCompatActivity {
-    public static final String TAG = MainActivityNew.class.getSimpleName();
+    public static final String TAG = MindActivity.class.getSimpleName();
     private ActivityMindBinding binding;
     private Handler handler = new Handler();
     private boolean enableDrag = false;
     private boolean showMind = false;
+    private boolean isShowLoading = true;
     private Gson gson = RetrofitClient.getGson();
     private Retrofit retrofit = RetrofitClient.getClient();
     private String wrid;
@@ -111,6 +114,11 @@ public class MindActivity extends AppCompatActivity {
 //        binding.lTabBar.ibSwitch.setOnClickListener(view -> {
 //            this.finish();
 //        });
+        
+        binding.lTabBar.ibSaveMind.setOnClickListener(view -> {
+//            editor.focusMidLocation();
+            saveMind();
+        });
 
         binding.lTabBar.ibSave.setOnClickListener(view -> {
             if (wrid != null) {
@@ -146,9 +154,9 @@ public class MindActivity extends AppCompatActivity {
         });
 
         //focus, means that tree view fill center in your window viewport
-        binding.ivFocus.setOnClickListener(view -> {
-            editor.focusMidLocation();
-        });
+//        binding.ivFocus.setOnClickListener(view -> {
+//            editor.focusMidLocation();
+//        });
 
         binding.ivFocus.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -162,6 +170,7 @@ public class MindActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_UP:
                         binding.ivFocus.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.iv_float_icon_unselected, null));
                         binding.ivFocus.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.focus_unselected, null));
+                        editor.focusMidLocation();
                         break;
                 }
                 return true;
@@ -291,7 +300,7 @@ public class MindActivity extends AppCompatActivity {
     }
 
     private void setData(TreeViewAdapter<Mind> adapter){
-        api.getWeekRecordSummarize(startTime, endTime, uuid).enqueue(new Callback<Result<WeekRecord>>() {
+        api.getWeeklyReport(uuid, startTime, endTime).enqueue(new Callback<Result<WeekRecord>>() {
             @Override
             public void onResponse(Call<Result<WeekRecord>> call, Response<Result<WeekRecord>> response) {
                 try {
@@ -334,21 +343,11 @@ public class MindActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         adapter.setTreeModel(treeModel);
+                        if (isShowLoading) {
+                            switchLoading();
+                        }
 //                        binding.tvWrContent.setText(getChildrenContent(treeModel.getRootNode(), 0));
 //                        binding.tvWrContent.setText(weekRecord.getContent());
-//                        File capture = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "mind_capture.png");
-//                        try {
-//                            Bitmap bitmap = Bitmap.createBitmap(binding.baseTreeView.getWidth(), binding.baseTreeView.getHeight(), Bitmap.Config.ARGB_8888);
-//                            Canvas canvas = new Canvas(bitmap);
-//                            binding.baseTreeView.draw(canvas);
-//                            canvas.setBitmap(null);
-//                            FileOutputStream fos = new FileOutputStream(capture);
-//                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-//                            fos.flush();
-//                            fos.close();
-//                        } catch (Exception e) {
-//                            Log.i(TAG, "run: " + e.getMessage());
-//                        }
                     }
                 });
             }
@@ -364,7 +363,74 @@ public class MindActivity extends AppCompatActivity {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    public void switchView(MindTreeViewAdapter adapter) {
+    public void switchLoading() {
+        if (binding.llLoadingLayout.getVisibility() != View.VISIBLE) {
+            binding.llLoadingLayout.setVisibility(View.VISIBLE);
+            binding.flMindContainer.setVisibility(View.INVISIBLE);
+        } else {
+            binding.llLoadingLayout.setVisibility(View.GONE);
+            binding.flMindContainer.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void saveMind() {
+        File capture = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "mind_capture_" + System.currentTimeMillis() + ".png");
+        try {
+            Log.i(TAG, "saveMind: " + binding.baseTreeView.getWidth());
+            Log.i(TAG, "saveMind: " + binding.baseTreeView.getHeight());
+            Bitmap bitmap = Bitmap.createBitmap(binding.baseTreeView.getWidth(), binding.baseTreeView.getHeight(), Bitmap.Config.ARGB_8888);
+            Log.i(TAG, "saveMind: " + bitmap);
+            Canvas canvas = new Canvas(bitmap);
+            canvas.save();
+//            Paint paint = new Paint();
+            binding.baseTreeView.draw(canvas);
+//            List<Bitmap> bitmaps = new ArrayList<>();
+//            List<Integer> leftList = new ArrayList<>();
+//            List<Integer> topList = new ArrayList<>();
+//            for (int i = 0 ; i < binding.baseTreeView.getChildCount(); i++) {
+//                View childView = binding.baseTreeView.getChildAt(i);
+//                int left = childView.getLeft();
+//                int top = childView.getTop();
+//                leftList.add(childView.getLeft());
+//                topList.add(childView.getTop());
+//                childView.measure(
+//                        View.MeasureSpec.makeMeasureSpec(binding.baseTreeView.getWidth(), View.MeasureSpec.EXACTLY),
+//                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+//                );
+//                childView.layout(0, 0, childView.getMeasuredWidth(), childView.getMeasuredHeight());
+//                childView.setDrawingCacheEnabled(true);
+//                childView.buildDrawingCache();
+////                bitmaps.add(childView.getDrawingCache());
+//                Log.i(TAG, "saveMind: " + i);
+//                Bitmap cache = childView.getDrawingCache();
+//                canvas.drawBitmap(cache, left, top, paint);
+//                cache.recycle();
+//            }
+//            for (int i = 0; i < binding.baseTreeView.getChildCount(); i++) {
+//                Bitmap b = bitmaps.get(i);
+//                int left = leftList.get(i);
+//                int top = topList.get(i);
+//                canvas.drawBitmap(b, left, top, paint);
+//                Log.i(TAG, "saveMind: " + i);
+//            }
+//            canvas.setBitmap(null);
+            canvas.restore();
+            FileOutputStream fos = new FileOutputStream(capture);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            bitmap.recycle();
+            fos.flush();
+            fos.close();
+
+            MediaScannerConnection.scanFile(MindActivity.this, new String[] {capture.getAbsolutePath()}, null, (path, uri) -> {
+            });
+            showToast("思维导图已保存至相册! ");
+        } catch (Exception e) {
+            Log.i(TAG, "run: " + e.getMessage());
+            showToast("思维导图保存失败! ");
+        }
+    }
+
+/*    public void switchView(MindTreeViewAdapter adapter) {
         showMind = !showMind;
         if (showMind) {
             binding.rlMindContainer.setVisibility(View.VISIBLE);
@@ -375,7 +441,7 @@ public class MindActivity extends AppCompatActivity {
         }
 //        binding.tvWrContent.setText(getChildrenContent(adapter.getTreeModel().getRootNode(), 0));
         adapter.notifyDataSetChange();
-    }
+    }*/
 
     public String getChildrenContent(NodeModel<Mind> node, int depth) {
         if (depth > 2) {
