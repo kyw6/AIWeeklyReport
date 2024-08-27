@@ -20,7 +20,8 @@ public interface WeeklyReportService {
     Call<ApiResponseNotList<WeekReportResponse>> getWeeklyReportData(
             @Field("start_time") String start_time,
             @Field("end_time") String end_time,
-            @Field("uuid") String uuid
+            @Field("uuid") String uuid,
+            @Field("name") String name
 
     );
 

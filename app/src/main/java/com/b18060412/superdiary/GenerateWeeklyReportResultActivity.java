@@ -38,6 +38,7 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
     private String startTimeStr = null;//用户选择的起始时间，格式为2024-08-23
     private String endTimeStr = null;//用户选择的结束时间
     private String uuid = null;//用户id
+    private String name = null;
 
     private EditText et_content;
     private ImageView backButton;
@@ -61,7 +62,7 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
         endTimeStr = dataIntent.getStringExtra("end_time_str");
         uuid = dataIntent.getStringExtra("uuid");
         // 获取存储的 name
-        String name = PreferencesUtil.getString(PreferenceKeys.USER_NAME_KEY, null);
+        name = PreferencesUtil.getString(PreferenceKeys.USER_NAME_KEY, null);
         jump_to_mind = findViewById(R.id.jump_mind);
         jump_to_mind.setOnClickListener(v -> {
             Intent jumpIntent = new Intent(GenerateWeeklyReportResultActivity.this, MindActivity.class);
@@ -125,7 +126,7 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
         // 创建一个WeeklyReportService实例
         WeeklyReportService weeklyReportService = RetrofitClient.getClient().create(WeeklyReportService.class);
         // 发起网络请求
-        Call<ApiResponseNotList<WeekReportResponse>> call = weeklyReportService.getWeeklyReportData(start_time, end_time, uuid);
+        Call<ApiResponseNotList<WeekReportResponse>> call = weeklyReportService.getWeeklyReportData(start_time, end_time, uuid,name);
         call.enqueue(new Callback<ApiResponseNotList<WeekReportResponse>>() {
             @Override
             public void onResponse(Call<ApiResponseNotList<WeekReportResponse>> call, Response<ApiResponseNotList<WeekReportResponse>> response) {
