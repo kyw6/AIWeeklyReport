@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +27,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -90,7 +92,13 @@ public class AddDiaryActivity extends AppCompatActivity {
         btnSubmit.setOnClickListener(v -> {
             String date = tvDate.getText().toString();
             String content = etReport.getText().toString();
-            executorService.execute(() -> sendDataToServer(date, content));
+            if (TextUtils.isEmpty(content) || Objects.equals(content, "")) {
+                Toast.makeText(AddDiaryActivity.this, "请输入内容", Toast.LENGTH_SHORT).show();
+                Log.d("ServerResponse", "内容为空");
+            }else {
+                executorService.execute(() -> sendDataToServer(date, content));
+            }
+
         });
     }
     private void sendDataToServer(String date, String content) {
