@@ -12,6 +12,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
     // 基本域名硬编码到这里
     private static final String BASE_URL = "http://mini4-mirecord-test.g.mi.com/";
+    //记得改add页面的
+//    private static final String BASE_URL = "http://101.43.134.112:8080/";
+
 
     private static Retrofit retrofit = null;
 

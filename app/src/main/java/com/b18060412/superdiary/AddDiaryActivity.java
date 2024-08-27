@@ -107,7 +107,7 @@ public class AddDiaryActivity extends AppCompatActivity {
             date = MyDateStringUtil.formatDateToTransfer(selectDay,selectMonth,selectYear);
             Log.d("kyw","选中的日期，格式化之后是：" + date);
             // 设置请求的URL
-            URL url = new URL("http://101.43.134.112:8080/record/daily");
+            URL url = new URL("http://mini4-mirecord-test.g.mi.com/record/daily");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW");
