@@ -3,6 +3,7 @@ package com.b18060412.superdiary;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -43,12 +44,15 @@ public class UpdateWeeklyReportResultActivity  extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_weekly_report_result);
+
         //获取uuid
         // 初始化 PreferencesUtil (如果尚未初始化)
         PreferencesUtil.init(UpdateWeeklyReportResultActivity.this); // context 传入当前上下文，如 Activity.this 或 getApplicationContext()
 
         // 获取存储的 UUID
         userUuid = PreferencesUtil.getString(PreferenceKeys.USER_UUID_KEY, null);
+        // 获取存储的 name
+        String name = PreferencesUtil.getString(PreferenceKeys.USER_NAME_KEY, null);
 
         if (userUuid != null) {
             Log.d("kyw_OtherActivity", "获取到的 UUID: " + userUuid);
@@ -91,6 +95,11 @@ public class UpdateWeeklyReportResultActivity  extends AppCompatActivity {
             jumpIntent.putExtra("start_time_str", weeklyReportStartDate);
             jumpIntent.putExtra("end_time_str", weeklyReportEndDate);
             jumpIntent.putExtra("uuid", uuid);
+            if (TextUtils.isEmpty(name)){
+                jumpIntent.putExtra("name", " ");
+            }else {
+                jumpIntent.putExtra("name", name);
+            }
             startActivity(jumpIntent);
         });
         backButton.setOnClickListener(v -> finish());

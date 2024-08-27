@@ -75,6 +75,7 @@ public class MindActivity extends AppCompatActivity {
     private String pptDownloadDomain = "http://10.192.212.104:8000";
     private String pptDownloadApi = "/myapp/pptdownload";
     private String pptDownloadUrl = pptDownloadDomain + pptDownloadApi;
+    private String name;
     MindApiService api;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,8 @@ public class MindActivity extends AppCompatActivity {
         startTime = dataIntent.getStringExtra("start_time_str");
         endTime = dataIntent.getStringExtra("end_time_str");
         uuid = dataIntent.getStringExtra("uuid");
+        name = dataIntent.getStringExtra("name");
+        Log.d("kyw", "MindActivity onCreate: " + name);
 
         initTvHeadShowTime();
         initWidgets();
@@ -127,7 +130,13 @@ public class MindActivity extends AppCompatActivity {
 //        });
 
         binding.lTabBar.ibExportPpt.setOnClickListener(view -> {
-            Uri uri = Uri.parse(pptDownloadUrl + "?uuid=" + uuid);
+            // url拼接uuid和name参数，用Uri类将它解析
+            // Uri uri = Uri.parse(pptDownloadUrl + "?uuid=" + uuid);
+            Uri uri = Uri.parse(pptDownloadUrl + "?uuid=" + uuid + "&name=" + name);
+            Log.d("kyw", "jieshou name : " + name);
+            // startActivity跳转
+            // 这边的Intent是意图，ACTION_VIEW会根据uri解析结果跳转不同的外部应用，比如http://开头会跳转浏览器
+            // 某些图片前缀会跳转相册，这样的
             startActivity(new Intent(Intent.ACTION_VIEW, uri));
         });
         

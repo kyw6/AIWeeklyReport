@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,6 +23,8 @@ import com.b18060412.superdiary.network.RetrofitClient;
 import com.b18060412.superdiary.network.WeeklyReportService;
 import com.b18060412.superdiary.network.responses.ApiResponseNotList;
 import com.b18060412.superdiary.network.responses.WeekReportResponse;
+import com.b18060412.superdiary.util.PreferenceKeys;
+import com.b18060412.superdiary.util.PreferencesUtil;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -57,13 +60,19 @@ public class GenerateWeeklyReportResultActivity extends AppCompatActivity {
         startTimeStr = dataIntent.getStringExtra("start_time_str");
         endTimeStr = dataIntent.getStringExtra("end_time_str");
         uuid = dataIntent.getStringExtra("uuid");
-
+        // 获取存储的 name
+        String name = PreferencesUtil.getString(PreferenceKeys.USER_NAME_KEY, null);
         jump_to_mind = findViewById(R.id.jump_mind);
         jump_to_mind.setOnClickListener(v -> {
             Intent jumpIntent = new Intent(GenerateWeeklyReportResultActivity.this, MindActivity.class);
             jumpIntent.putExtra("start_time_str", startTimeStr);
             jumpIntent.putExtra("end_time_str", endTimeStr);
             jumpIntent.putExtra("uuid", uuid);
+            if (TextUtils.isEmpty(name)){
+                jumpIntent.putExtra("name", " ");
+            }else {
+                jumpIntent.putExtra("name", name);
+            }
             startActivity(jumpIntent);
         });
 
