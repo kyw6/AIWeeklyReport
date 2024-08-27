@@ -2,6 +2,7 @@ package com.b18060412.superdiary;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -25,8 +26,8 @@ import retrofit2.Retrofit;
 
 public class OKRActivity extends AppCompatActivity {
 
-    private TextView okrTextView;
-    private TextView krsTextView;
+//    private TextView okrTextView;
+//    private TextView krsTextView;
     private TextView resTextView;
     private TextView proposalTextView;
     private ProgressBar loadingProgressBar;
@@ -37,8 +38,8 @@ public class OKRActivity extends AppCompatActivity {
         setContentView(R.layout.activity_okr);
 
         // 初始化UI控件
-        okrTextView = findViewById(R.id.okr_text_view);
-        krsTextView = findViewById(R.id.krs_text_view);
+//        okrTextView = findViewById(R.id.okr_text_view);
+//        krsTextView = findViewById(R.id.krs_text_view);
         resTextView = findViewById(R.id.res_text_view);
         proposalTextView = findViewById(R.id.proposal_text_view);
         loadingProgressBar = findViewById(R.id.loading_progress_bar);
@@ -98,25 +99,28 @@ public class OKRActivity extends AppCompatActivity {
 
     private void displayOkrData(OkrResponse.Data data) {
         if (data != null) {
-            okrTextView.setText("OKRs: " + formatList(data.getOkr()));
-            krsTextView.setText("KRs: " + formatList(data.getKrs()));
-            resTextView.setText("Res: " + data.getContent());  // 更新字段名
+//            okrTextView.setText("OKRs: " + formatList(data.getOkr()));
+//            krsTextView.setText("KRs: " + formatList(data.getKrs()));
+            String res = "Res: " + data.getContent();
+            resTextView.setText(Html.fromHtml(res, Html.FROM_HTML_MODE_LEGACY));
+//            resTextView.setText("Res: " + data.getContent());  // 更新字段名
+//            resTextView.setText("Res: " + data.getContent());  // 更新字段名
             proposalTextView.setText("Proposal: " + data.getPropose());  // 更新字段名
 
             // 显示数据
-            okrTextView.setVisibility(View.VISIBLE);
-            krsTextView.setVisibility(View.VISIBLE);
+//            okrTextView.setVisibility(View.VISIBLE);
+//            krsTextView.setVisibility(View.VISIBLE);
             resTextView.setVisibility(View.VISIBLE);
             proposalTextView.setVisibility(View.VISIBLE);
         } else {
-            okrTextView.setText("OKRs: 无数据");
-            krsTextView.setText("KRs: 无数据");
+//            okrTextView.setText("OKRs: 无数据");
+//            krsTextView.setText("KRs: 无数据");
             resTextView.setText("Res: 无数据");
             proposalTextView.setText("Proposal: 无数据");
 
             // 显示数据
-            okrTextView.setVisibility(View.VISIBLE);
-            krsTextView.setVisibility(View.VISIBLE);
+//            okrTextView.setVisibility(View.VISIBLE);
+//            krsTextView.setVisibility(View.VISIBLE);
             resTextView.setVisibility(View.VISIBLE);
             proposalTextView.setVisibility(View.VISIBLE);
         }

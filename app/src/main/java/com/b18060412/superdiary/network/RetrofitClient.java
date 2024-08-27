@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
     // 基本域名硬编码到这里
-    private static final String BASE_URL = "http://101.43.134.112:8080/";
+    private static final String BASE_URL = "http://mini4-mirecord-test.g.mi.com/";
 
     private static Retrofit retrofit = null;
 
@@ -25,9 +25,9 @@ public class RetrofitClient {
         if (retrofit == null) {
             // 创建OkHttpClient并设置超时时间
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                    .connectTimeout(60, TimeUnit.SECONDS)  // 连接超时
-                    .readTimeout(60, TimeUnit.SECONDS)     // 读取超时
-                    .writeTimeout(60, TimeUnit.SECONDS)    // 写入超时
+                    .connectTimeout(300, TimeUnit.SECONDS)  // 连接超时
+                    .readTimeout(300, TimeUnit.SECONDS)     // 读取超时
+                    .writeTimeout(300, TimeUnit.SECONDS)    // 写入超时
                     .build();
 
             retrofit = new Retrofit.Builder()

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp">
 
     <!-- 加载动画 -->
@@ -9,58 +10,84 @@
         android:id="@+id/loading_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="visible" />
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- OKR文本 -->
-    <TextView
-        android:id="@+id/okr_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="OKRs: "
-        android:textSize="16sp"
-        android:visibility="gone"
-        android:layout_below="@id/loading_progress_bar"
-        android:layout_marginTop="16dp"/>
-
-    <TextView
-        android:id="@+id/krs_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="KRs: "
-        android:textSize="16sp"
-        android:visibility="gone"
-        android:layout_below="@id/okr_text_view"
-        android:layout_marginTop="8dp"/>
-
     <TextView
         android:id="@+id/res_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Res: "
+        android:text="OKRs: "
         android:textSize="16sp"
-        android:visibility="gone"
-        android:layout_below="@id/krs_text_view"
-        android:layout_marginTop="8dp"/>
+        android:visibility="visible"
+        android:padding="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/proposal_text_view"
+        android:layout_marginTop="20dp"/>
 
+    <!-- KRs文本 -->
+    <TextView
+        android:id="@+id/proposal_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="KRs: "
+        android:textSize="16sp"
+        android:visibility="visible"
+        android:padding="20dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/res_text_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+<!--    &lt;!&ndash; Res文本 &ndash;&gt;-->
+<!--    <TextView-->
+<!--        android:id="@+id/res_text_view"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Res: "-->
+<!--        android:textSize="16sp"-->
+<!--        android:visibility="visible"-->
+<!--        android:padding="20dp"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/krs_text_view"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/proposal_text_view"-->
+<!--        android:layout_marginTop="8dp"/>-->
+
+    <!-- 错误文本 -->
     <TextView
         android:id="@+id/error_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="网络请求错误"
-        android:layout_centerInParent="true"
         android:textSize="25sp"
         android:visibility="gone"
+        android:padding="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-        />
+<!--    &lt;!&ndash; Proposal文本 &ndash;&gt;-->
+<!--    <TextView-->
+<!--        android:id="@+id/proposal_text_view"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Proposal: "-->
+<!--        android:textSize="16sp"-->
+<!--        android:visibility="visible"-->
+<!--        android:padding="20dp"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/res_text_view"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        android:layout_marginTop="8dp"/>-->
 
-    <TextView
-        android:id="@+id/proposal_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Proposal: "
-        android:textSize="16sp"
-        android:visibility="gone"
-        android:layout_below="@id/res_text_view"
-        android:layout_marginTop="8dp"/>
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

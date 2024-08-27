@@ -358,6 +358,7 @@ public class MainActivityNew extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ApiResponse<DiaryResponse>> call, Throwable t) {
+                Log.d("kyw_MainActivityNew", "onFailure: " + t.getMessage());
                 NetworkConnectionError();
             }
         });
