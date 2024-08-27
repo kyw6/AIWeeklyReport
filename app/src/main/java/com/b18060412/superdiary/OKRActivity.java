@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.b18060412.superdiary.network.OkrService;
 import com.b18060412.superdiary.network.RetrofitClient;
 import com.b18060412.superdiary.network.responses.OkrResponse;
+import com.b18060412.superdiary.util.PreferenceKeys;
+import com.b18060412.superdiary.util.PreferencesUtil;
 
 import java.util.List;
 
@@ -53,7 +55,14 @@ public class OKRActivity extends AppCompatActivity {
         // 使用用户名发起请求
 //        String username = "makang3";  // 替换为实际用户名
         Call<OkrResponse> call = okrService.getOkrByUserName(username);
-
+        //保存 name 到本地
+        PreferencesUtil.init(this);
+        PreferencesUtil.setString(PreferenceKeys.USER_NAME_KEY, username);
+        if (PreferencesUtil.getString(PreferenceKeys.USER_NAME_KEY, null) != null) {
+            Log.d("kyw_OtherActivity", "获取到的用户名: " + PreferencesUtil.getString(PreferenceKeys.USER_NAME_KEY, null));
+        } else {
+            Log.d("kyw_OtherActivity", "用户名未找到");
+        }
         // 显示加载动画
         loadingProgressBar.setVisibility(View.VISIBLE);
 
